@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AppChatApplication</string>
+    <string name="register">Register</string>
 </resources>

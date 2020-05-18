@@ -11,8 +11,16 @@
         android:layout_height="wrap_content"
         android:text="Welcome to App Chat!"
         android:textSize="24sp"
+        android:id="@+id/text"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:id="@+id/reg_button"
+        android:layout_below="@+id/text"/>
+
 
 </RelativeLayout>
