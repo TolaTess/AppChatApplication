@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AppChatApplication</string>
     <string name="register">Register</string>
-    <string name="log_out">log out</string>
+    <string name="log_out">Log out</string>
     <string name="login">Login</string>
     <string name="email">email</string>
     <string name="password">password</string>
