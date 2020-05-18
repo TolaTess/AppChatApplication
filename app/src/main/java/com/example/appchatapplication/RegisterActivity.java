@@ -21,6 +21,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
@@ -34,6 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Button mCreateButton;
 
     private ProgressDialog mRegProgress;
+    DatabaseReference mDatabase;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,13 +84,35 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void register_user(String display_name, String email, String password){
+    private void register_user(final String display_name, String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    mRegProgress.dismiss();
-                    sendToStart();
+
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String userId = currentUser.getUid();
+                    //users as the table / root element and userid as the next root element
+                    mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+
+                    //save all information in a hashmap and pass to databaseRef
+                    HashMap<String, String> userMap = new HashMap<>();
+                    userMap.put("name", display_name);
+                    userMap.put("status", "Chatting with friends the right way");
+                    userMap.put("image", "default");
+                    userMap.put("thumb_image", "default");
+
+                    //send hashmap to database
+                    mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                mRegProgress.dismiss();
+                                sendToStart();
+                            }
+                        }
+                    });
+
                 } else{
                     mRegProgress.hide();
                     Toast.makeText(RegisterActivity.this, "An error occurred, please try again", Toast.LENGTH_LONG).show();
@@ -94,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void sendToStart() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         //finish so user can't come back to this page until sign in
         finish();
