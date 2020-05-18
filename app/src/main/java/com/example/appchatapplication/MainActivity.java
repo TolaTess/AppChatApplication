@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -16,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Toolbar mToolbar;
+
+    private ViewPager mViewPager;
+    private CustomPagerAdapter customPagerAdapter;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,7 +33,15 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("App Chat");
-        mToolbar.bringToFront();
+
+        //Tabs
+        mViewPager = findViewById(R.id.main_view_pager);
+        customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
+
+        mViewPager.setAdapter(customPagerAdapter);
+
+        tabLayout = findViewById(R.id.main_tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override

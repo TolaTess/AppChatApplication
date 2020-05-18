@@ -99,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendToStart() {
         Intent intent = new Intent(this, MainActivity.class);
+        //ensure user do not go back to login page once logged in
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
