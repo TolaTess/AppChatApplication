@@ -13,6 +13,7 @@ import kotlin.jvm.internal.Intrinsics;
 public class StartActivity extends AppCompatActivity {
 
     private Button button;
+    private Button loginButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,11 +21,20 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         button = findViewById(R.id.reg_button);
+        loginButton = findViewById(R.id.login_btn);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(StartActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StartActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
