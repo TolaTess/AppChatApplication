@@ -38,6 +38,8 @@ import org.w3c.dom.Text;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -191,16 +193,33 @@ public class SettingsActivity extends AppCompatActivity {
                 filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        String download_uri = uri.toString();
-                        myDatabaseRef.child("image").setValue(download_uri).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        final String download_uri = uri.toString();
+                        UploadTask uploadTask = thumbpath.putBytes(thumb_byte);
+                        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    mProgressBar.dismiss();
-                                } else {
-                                    Toast.makeText(SettingsActivity.this, "Error occured", Toast.LENGTH_LONG).show();
-                                    mProgressBar.dismiss();
-                                }
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                thumbpath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        String thumb_download_uri = uri.toString();
+                                        //use Map instead of HashMap to update rather than delete existing data
+                                        Map update_hashMap = new HashMap();
+                                        update_hashMap.put("image", download_uri);
+                                        update_hashMap.put("thumb_image", thumb_download_uri);
+                                        //use updateChildren instead of setValue
+                                        myDatabaseRef.updateChildren(update_hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    mProgressBar.dismiss();
+                                                } else {
+                                                    Toast.makeText(SettingsActivity.this, "Error occured while uploading image", Toast.LENGTH_LONG).show();
+                                                    mProgressBar.dismiss();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                     }
