@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,7 +70,20 @@ public class AllUserActivity extends AppCompatActivity {
                 Log.d(TAG, "onBindViewHolder: ");
                 holder.setName(model.getName());
                 holder.setStatus(model.getStatus());
-                holder.setImage(model.getImage());
+                holder.setImage(model.getThumb_image());
+
+                final String userid = getRef(position).getKey();
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent profileIntent = new Intent(AllUserActivity.this, ProfileActivity.class);
+                        profileIntent.putExtra("user_id", userid); // send user id to use it to get all other info in db
+                        startActivity(profileIntent);
+                    }
+                });
+
+
             }
         };
         mUserList.setAdapter(adapter);
@@ -106,9 +120,9 @@ public class AllUserActivity extends AppCompatActivity {
             TextView statusView = mView.findViewById(R.id.users_status);
             statusView.setText(status);
         }
-        public void setImage(String image){
-            CircleImageView mImage = mView.findViewById(R.id.users_image);
-            Picasso.get().load(image).into(mImage);
+        public void setImage(String thumb_image){
+            CircleImageView mThumbImage = mView.findViewById(R.id.users_image);
+            Picasso.get().load(thumb_image).placeholder(R.drawable.ic_launcher_foreground).into(mThumbImage);
         }
     }
 }
