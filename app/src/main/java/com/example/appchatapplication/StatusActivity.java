@@ -66,7 +66,7 @@ public class StatusActivity extends AppCompatActivity {
                 mRegProgress.setCanceledOnTouchOutside(false);
                 mRegProgress.show();
 
-                String status_v = mStatus.getEditText().getText().toString(); //this is not working
+                String status_v = mStatus.getEditText().getText().toString();
                 mydataBaseRef.child("status").setValue(status_v).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -7,10 +7,13 @@
     android:background="@color/colorPrimary"
     tools:context=".SettingsActivity">
 
+    <include layout="@layout/app_bar_layout" android:id="@+id/setting_toolbar"/>
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_setting"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:layout_below="@id/setting_toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
@@ -20,9 +23,9 @@
         android:id="@+id/text_display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/img_setting"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="277dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/aclonica"
         android:text="Display Name"
         android:textColor="#FFFFFF"
@@ -32,9 +35,9 @@
         android:id="@+id/text_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+       android:layout_below="@+id/text_display_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="336dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="serif"
         android:text="Chatting with Friends the right way"
         android:textColor="#FFFFFF"

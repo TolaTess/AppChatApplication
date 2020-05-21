@@ -2,9 +2,11 @@ package com.example.appchatapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -33,11 +35,14 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -46,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
     private CircleImageView mDisplayImage;
     private TextView mName;
     private TextView mStatus;
+    private Toolbar toolbar;
 
     private Button mStatusButton;
     private Button mChangeImage;
@@ -60,6 +66,11 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        toolbar = findViewById(R.id.setting_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Account Settings");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDisplayImage = findViewById(R.id.img_setting);
         mName = findViewById(R.id.text_display_name);
@@ -84,7 +95,11 @@ public class SettingsActivity extends AppCompatActivity {
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
-                Picasso.get().load(image).into(mDisplayImage);
+                //ensures default image stays on screen
+                if (!image.equals("default")) {
+                    //placeholder holds a picture on file before the getting database
+                    Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mDisplayImage);
+                }
                 mName.setText(name);
                 mStatus.setText(status);
             }
@@ -135,42 +150,63 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 mProgressBar = new ProgressDialog(SettingsActivity.this);
-                mProgressBar.setTitle("Uploading Imaage");
+                mProgressBar.setTitle("Uploading Image");
                 mProgressBar.setMessage("Please wait while we upload and process the image");
                 mProgressBar.setCanceledOnTouchOutside(false);
                 mProgressBar.show();
 
                 Uri resultUri = result.getUri();
-
+                File thumb_file = new File(resultUri.getPath());
                 String userUid = mCurrentUser.getUid();
+                Bitmap thumb_bitmap = null;
+                try {
+                    thumb_bitmap = new Compressor(this)
+                            .setMaxWidth(200).setMaxHeight(200)
+                            .setQuality(75).compressToBitmap(thumb_file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte [] thumb_byte = baos.toByteArray();
+
+
                 final StorageReference filepath = mStorageRef.child("profile_images").child(userUid + ".jpg");
-                filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            //Toast.makeText(SettingsActivity.this, "Working", Toast.LENGTH_LONG).show();
-                            filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    String download_uri = uri.toString();
-                                    myDatabaseRef.child("image").setValue(download_uri).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                mProgressBar.dismiss();
-                                            } else {
-                                                Toast.makeText(SettingsActivity.this, "Error occured", Toast.LENGTH_LONG).show();
-                                                mProgressBar.dismiss();
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                    }
-                });
+                StorageReference thumb_filepath = mStorageRef.child("profile_images").child("thumbs").child(userUid + ".jpg");
+
+                uploadImage(resultUri, filepath, thumb_filepath, thumb_byte);
+
             } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Exception error = result.getError();
             }
         }
+    }
+
+    private void uploadImage(Uri resultUri, final StorageReference filepath, final StorageReference thumbpath, final byte[] thumb_byte) {
+        filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                //Toast.makeText(SettingsActivity.this, "Working", Toast.LENGTH_LONG).show();
+                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        String download_uri = uri.toString();
+                        myDatabaseRef.child("image").setValue(download_uri).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    mProgressBar.dismiss();
+                                } else {
+                                    Toast.makeText(SettingsActivity.this, "Error occured", Toast.LENGTH_LONG).show();
+                                    mProgressBar.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
 }

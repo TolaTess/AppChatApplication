@@ -42,7 +42,7 @@ public class AllUserActivity extends AppCompatActivity {
 
         mUserList = findViewById(R.id.alluser_recycler);
         mUserList.setLayoutManager(new LinearLayoutManager(this));
-        //mUserList.setHasFixedSize(true);
+        //mUserList.setHasFixedSize(true); nothing displayed with this... don't use
         fetch();
     }
 
