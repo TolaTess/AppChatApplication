@@ -29,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -87,20 +89,38 @@ public class SettingsActivity extends AppCompatActivity {
 
         myDatabaseRef = FirebaseDatabase.getInstance()
                 .getReference().child("Users").child(userId);
+        //save data offline from firebase
+        //add name of app to Manifest (after theme)
+        //workes well for String not for image
+        //use Picasson offline for images
+        myDatabaseRef.keepSynced(true);
 
         //Value Event Listener to get the data from database
         myDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
                 //ensures default image stays on screen
                 if (!image.equals("default")) {
                     //placeholder holds a picture on file before the getting database
-                    Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mDisplayImage);
+                    Picasso.get().load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .into(mDisplayImage, new Callback() {
+                                @Override
+                                public void onSuccess() {
+
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    //if offline image load fails load online
+                                    Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mDisplayImage);
+                                }
+                            });
                 }
                 mName.setText(name);
                 mStatus.setText(status);

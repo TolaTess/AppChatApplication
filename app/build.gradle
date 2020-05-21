@@ -58,8 +58,10 @@ dependencies {
 
     //image loader
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
     //image compressor
     implementation 'id.zelory:compressor:2.1.0'
+
 
 }
