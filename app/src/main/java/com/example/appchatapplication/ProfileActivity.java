@@ -25,17 +25,19 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private ImageView mProfileImage;
     private TextView mDisplayName, mProfileStatus, mProfileFriendsCount;
-    private Button mProfileButton;
+    private Button mProfileButton, mDeclineButton;
     private ProgressDialog progressDialog;
 
     private DatabaseReference mUserDatabase;
     private DatabaseReference mFriendReqDatabase;
     private DatabaseReference mFriendsDatabase;
+    private DatabaseReference mNotification;
     private FirebaseUser mCurrentuser;
 
     private String mCurrent_state;
@@ -53,6 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
         mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_Req");
         mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
+        mNotification = FirebaseDatabase.getInstance().getReference().child("Notifications");
         mCurrentuser = FirebaseAuth.getInstance().getCurrentUser();
 
         mDisplayName = findViewById(R.id.profile_name);
@@ -60,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         mProfileFriendsCount = findViewById(R.id.profile_totalFriends);
         mProfileImage = findViewById(R.id.profile_image);
         mProfileButton = findViewById(R.id.profile_send_reg_btn);
+        mDeclineButton = findViewById(R.id.decline_req_btn);
 
         mCurrent_state = "not_friends";
 
@@ -81,6 +85,9 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mProfileImage);
 
+                mDeclineButton.setVisibility(View.INVISIBLE);
+                mDeclineButton.setEnabled(false);
+
                 //friends list/ request feature
                 mFriendReqDatabase.child(mCurrentuser.getUid())
                         .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -92,6 +99,9 @@ public class ProfileActivity extends AppCompatActivity {
                                     if(req_type.equals("received")){
                                         mCurrent_state = "req_received";
                                         mProfileButton.setText("Accept Friend Request");
+                                        mDeclineButton.setVisibility(View.VISIBLE);
+                                        mDeclineButton.setEnabled(true);
+
                                     } else if(req_type.equals("sent")){
                                         mCurrent_state = "req_sent";
                                         mProfileButton.setText("Cancel Friend Request");
@@ -149,9 +159,22 @@ public class ProfileActivity extends AppCompatActivity {
                                         .child("request_type").setValue("received").addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        mProfileButton.setEnabled(true); //grey out button
-                                        mCurrent_state = "req_sent";
-                                        mProfileButton.setText(R.string.cancel_friend_req); //change the text of button
+
+                                        HashMap<String, String> notifs = new HashMap<>();
+                                        notifs.put("from", mCurrentuser.getUid());
+                                        notifs.put("type", "request");
+                                        mNotification.child(user_id).push().setValue(notifs).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    mProfileButton.setEnabled(true); //grey out button
+                                                    mCurrent_state = "req_sent";
+                                                    mProfileButton.setText(R.string.cancel_friend_req); //change the text of button
+                                                    mDeclineButton.setVisibility(View.INVISIBLE);
+                                                    mDeclineButton.setEnabled(false);
+                                                }
+                                            }
+                                        });
                                         Toast.makeText(ProfileActivity.this, "Request sent",
                                                 Toast.LENGTH_LONG).show();
                                     }
