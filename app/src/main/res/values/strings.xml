@@ -7,8 +7,13 @@
     <string name="password">password</string>
     <string name="create_account">Create Account</string>
     <string name="please_log_in">Please Log In</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel_friend_req">Cancel Friend Request</string>
+    <string name="display_name">Display Name</string>
+    <string name="user_status">User Status</string>
+    <string name="send_friend_request">SEND FRIEND REQUEST</string>
+    <string name="total_friends">Total Friends</string>
+    <string name="decline_request">Decline Request</string>
+    <string name="create_a_new_account">Create a new Account</string>
+    <string name="change_image">Change Image</string>
+    <string name="change_status">Change Status</string>
 </resources>

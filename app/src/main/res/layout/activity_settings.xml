@@ -27,7 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/aclonica"
-        android:text="Display Name"
+        android:text="@string/display_name"
         android:textColor="#FFFFFF"
         android:textSize="24sp" />
 
@@ -39,7 +39,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:fontFamily="serif"
-        android:text="Chatting with Friends the right way"
+        android:text="@string/user_status"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 
@@ -50,9 +50,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="180dp"
-        android:background="#9C27B0"
-        android:fontFamily="sans-serif"
-        android:text="Change Image"
+        android:background="@color/colourAccent2"
+        android:fontFamily="@font/aclonica"
+        android:text="@string/change_image"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
@@ -63,9 +63,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="110dp"
-        android:background="#00BCD4"
-        android:fontFamily="serif"
-        android:text="Change Status"
+        android:background="@color/colorPrimaryDark"
+        android:fontFamily="@font/aclonica"
+        android:text="@string/change_status"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
