@@ -8,7 +8,8 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import kotlin.jvm.internal.Intrinsics;
+import com.example.appchatapplication.auth.LoginActivity;
+import com.example.appchatapplication.auth.RegisterActivity;
 
 public class StartActivity extends AppCompatActivity {
 

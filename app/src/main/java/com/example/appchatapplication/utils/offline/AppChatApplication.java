@@ -1,4 +1,4 @@
-package com.example.appchatapplication;
+package com.example.appchatapplication.utils.offline;
 
 import android.app.Application;
 

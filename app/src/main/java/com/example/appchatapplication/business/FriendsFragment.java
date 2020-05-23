@@ -1,4 +1,4 @@
-package com.example.appchatapplication;
+package com.example.appchatapplication.business;
 
 import android.os.Bundle;
 
@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.appchatapplication.R;
+import com.example.appchatapplication.model.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +35,7 @@ public class FriendsFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mUserDatabase;
+    FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsAdapter;
 
     private String mCurrentUserID;
 
@@ -52,10 +55,7 @@ public class FriendsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         mCurrentUserID = mAuth.getCurrentUser().getUid();
-        mFriendsDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Friends").child(mCurrentUserID);
-        mUserDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Users");
+
 
         //mFriendsList.setHasFixedSize(true);
         mFriendsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -68,13 +68,19 @@ public class FriendsFragment extends Fragment {
         Log.d(TAG, "onStart: ");
         super.onStart();
 
+        mFriendsDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("Friends").child(mCurrentUserID);
+        mUserDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("Users");
+
         FirebaseRecyclerOptions<Friends> options =
                 new FirebaseRecyclerOptions.Builder<Friends>()
                         .setQuery(mFriendsDatabase, Friends.class)
                         .build();
 
-        FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsAdapter =
-                new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(options) {
+        friendsAdapter =
+                new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(
+                        options) {
                     @Override
                     public FriendsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         Log.d(TAG, "onCreateViewHolder: ");
@@ -86,7 +92,7 @@ public class FriendsFragment extends Fragment {
                     @Override
                     protected void onBindViewHolder(@NonNull final FriendsViewHolder holder, int position, @NonNull final Friends model) {
                         Log.d(TAG, "onBindViewHolder: ");
-                        holder.setDate(model.getDate());
+                        holder.setDate(model.getDate_time());
 
                         String list_user_id = getRef(position).getKey();
                         mUserDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
@@ -109,7 +115,14 @@ public class FriendsFragment extends Fragment {
 
                     }
                 };
+        friendsAdapter.startListening();
         mFriendsList.setAdapter(friendsAdapter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        friendsAdapter.stopListening();
     }
 
     public static class FriendsViewHolder extends RecyclerView.ViewHolder {

@@ -1,4 +1,4 @@
-package com.example.appchatapplication;
+package com.example.appchatapplication.account;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.appchatapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -153,7 +153,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mProfileButton.setEnabled(false);
 
-                DatabaseReference newNotifRef = mRootRef.child("notifications").child(user_id).push();
+                DatabaseReference newNotifRef = mRootRef.child("Notifications").child(user_id).push();
                 String newNotifId = newNotifRef.getKey();
 
                 //friends request section

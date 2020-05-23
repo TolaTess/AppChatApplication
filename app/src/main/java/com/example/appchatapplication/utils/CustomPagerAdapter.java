@@ -1,13 +1,15 @@
-package com.example.appchatapplication;
-
-import android.app.TaskStackBuilder;
+package com.example.appchatapplication.utils;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-class CustomPagerAdapter extends FragmentPagerAdapter {
+import com.example.appchatapplication.business.ChatFragment;
+import com.example.appchatapplication.business.FriendsFragment;
+import com.example.appchatapplication.business.RequestFragment;
+
+public class CustomPagerAdapter extends FragmentPagerAdapter {
 
     private static int TAB_NUM = 3;
 

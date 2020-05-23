@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="AppChatApplication">
+        android:name=".utils.offline.AppChatApplication">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,15 +22,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatusActivity"
-            android:parentActivityName=".SettingsActivity" />
+            android:name=".account.StatusActivity"
+            android:parentActivityName=".account.SettingsActivity" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".account.SettingsActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".auth.LoginActivity" />
+        <activity android:name=".auth.RegisterActivity" />
         <activity android:name=".StartActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".account.ProfileActivity" />
         <activity
             android:name=".AllUserActivity"
             android:parentActivityName=".MainActivity" />
