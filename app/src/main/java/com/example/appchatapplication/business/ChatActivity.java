@@ -6,10 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appchatapplication.R;
@@ -39,6 +44,10 @@ public class ChatActivity extends AppCompatActivity {
     private TextView mNameView;
     private TextView mLastSeen;
 
+    private ImageView mChatAddBtn;
+    private ImageView mChatSendBtn;
+    private EditText mChatMessageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +76,9 @@ public class ChatActivity extends AppCompatActivity {
         mNameView = findViewById(R.id.custom_bar_name);
         mLastSeen = findViewById(R.id.last_seen);
         mProfileImage = findViewById(R.id.custom_bar_image);
+        mChatAddBtn = findViewById(R.id.chat_add_btn);
+        mChatSendBtn = findViewById(R.id.chat_msg_send);
+        mChatMessageView = findViewById(R.id.chat_message_input);
 
         mNameView.setText(userName);
 
@@ -123,6 +135,49 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        mChatSendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+            }
+        });
+
+
+    }
+
+    private void sendMessage() {
+
+        String message = mChatMessageView.getText().toString();
+        if(!TextUtils.isEmpty(message)){
+            String current_user_ref = "Messages/" + mCurrentUserId + "/" + mChatUser;
+            String chat_user_ref = "Messages/" + mChatUser + "/" + mCurrentUserId;
+
+            DatabaseReference user_message_push = mRootRef.child("Messages")
+                    .child(mCurrentUserId).child(mChatUser).push();
+
+            String push_id = user_message_push.getKey();
+
+            Map messageMap = new HashMap();
+            messageMap.put("message", message);
+            messageMap.put("seen", false);
+            messageMap.put("type", "text");
+            messageMap.put("time", ServerValue.TIMESTAMP);
+
+            Map messageUserMap = new HashMap();
+            messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
+            messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+
+            mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                    if(databaseError != null ){
+                        Log.d("CHAT_LOG", databaseError.getMessage().toString());
+                    }
+                }
+            });
+
+
+        }
 
     }
 }

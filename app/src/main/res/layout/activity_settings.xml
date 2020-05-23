@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="180dp"
-        android:background="@color/colourAccent2"
+        android:background="@color/colourPurple"
         android:fontFamily="@font/aclonica"
         android:text="@string/change_image"
         android:textColor="#FFFFFF"
