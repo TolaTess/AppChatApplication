@@ -16,4 +16,5 @@
     <string name="create_a_new_account">Create a new Account</string>
     <string name="change_image">Change Image</string>
     <string name="change_status">Change Status</string>
+    <string name="online">Online</string>
 </resources>
