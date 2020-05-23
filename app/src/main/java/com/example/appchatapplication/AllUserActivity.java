@@ -18,6 +18,7 @@ import com.example.appchatapplication.account.ProfileActivity;
 import com.example.appchatapplication.model.Users;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -30,6 +31,7 @@ public class AllUserActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView mUserList;
     private DatabaseReference mUserDatabase;
+    private DatabaseReference mUserRef;
     FirebaseRecyclerAdapter adapter;
 
     @Override
@@ -42,6 +44,11 @@ public class AllUserActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("All Users");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mUserRef = FirebaseDatabase.getInstance()
+                .getReference().child("Users")
+                .child(mAuth.getCurrentUser().getUid());
 
         mUserList = findViewById(R.id.alluser_recycler);
         mUserList.setLayoutManager(new LinearLayoutManager(this));
@@ -96,6 +103,7 @@ public class AllUserActivity extends AppCompatActivity {
         Log.d(TAG, "onStart: ");
         super.onStart();
         adapter.startListening();
+        mUserRef.child("online").setValue(true);
     }
 
     @Override
@@ -103,6 +111,7 @@ public class AllUserActivity extends AppCompatActivity {
         Log.d(TAG, "onStop: ");
         super.onStop();
         adapter.stopListening();
+        mUserRef.child("online").setValue(false);
     }
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {

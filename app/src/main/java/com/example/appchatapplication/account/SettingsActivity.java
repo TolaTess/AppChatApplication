@@ -56,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private FirebaseUser mCurrentUser;
     private DatabaseReference myDatabaseRef;
+    private DatabaseReference mUserRef;
     private StorageReference mStorageRef;
 
     private ProgressDialog mProgressBar;
@@ -80,6 +81,10 @@ public class SettingsActivity extends AppCompatActivity {
         String userId = mCurrentUser.getUid();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mUserRef = FirebaseDatabase.getInstance()
+                .getReference().child("Users")
+                .child(mAuth.getCurrentUser().getUid());
 
         myDatabaseRef = FirebaseDatabase.getInstance()
                 .getReference().child("Users").child(userId);
@@ -242,4 +247,15 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mUserRef.child("online").setValue(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mUserRef.child("online").setValue(false);
+    }
 }
