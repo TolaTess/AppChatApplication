@@ -36,23 +36,27 @@ public class AppChatApplication extends Application {
         Picasso.setSingletonInstance(built);
 
         mAuth = FirebaseAuth.getInstance();
-        mUserDatabase = FirebaseDatabase.getInstance()
-                .getReference().child("Users").child(mAuth.getCurrentUser().getUid());
 
-        //keep track of if user is online or not
-        mUserDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    mUserDatabase.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+        if(mAuth.getCurrentUser() != null) {
+
+            mUserDatabase = FirebaseDatabase.getInstance()
+                    .getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+
+            //keep track of if user is online or not
+            mUserDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        mUserDatabase.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 }
 

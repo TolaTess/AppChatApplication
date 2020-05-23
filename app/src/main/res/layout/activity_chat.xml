@@ -11,11 +11,23 @@
         android:id="@+id/chat_toolbar"
         layout="@layout/app_bar_layout"
         android:layout_width="0dp"
-        android:layout_marginBottom="592dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/messages_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messages_list"
+        android:layout_width="413dp"
+        android:layout_height="554dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_toolbar">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -25,7 +37,6 @@
         android:layout_alignParentTop="false"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="false"
-        android:layout_marginTop="556dp"
         android:layout_marginBottom="50dp"
         android:orientation="horizontal"
         android:weightSum="10"
@@ -33,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chat_toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/messages_list">
 
         <ImageView
             android:id="@+id/chat_add_btn"
