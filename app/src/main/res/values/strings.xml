@@ -18,4 +18,5 @@
     <string name="change_status">Change Status</string>
     <string name="online">Online</string>
     <string name="message_prompt">Enter Message...</string>
+    <string name="last_seen">Last Seen</string>
 </resources>

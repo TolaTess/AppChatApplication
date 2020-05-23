@@ -2,17 +2,18 @@ package com.example.appchatapplication.model;
 
 public class Messages {
 
-    private String message, type;
+    private String message, type, from;
     private long time;
     private boolean seen;
 
     public Messages(){}
 
-    public Messages(String messages, String type, long time, boolean seen) {
+    public Messages(String messages, String type, long time, boolean seen, String from) {
         this.message = messages;
         this.type = type;
         this.time = time;
         this.seen = seen;
+        this.from = from;
     }
 
     public String getMessage() {
@@ -47,11 +48,11 @@ public class Messages {
         this.seen = seen;
     }
 
-    /* public String getFrom() {
+     public String getFrom() {
         return from;
     }
 
     public void setFrom(String from) {
         this.from = from;
-    }*/
+    }
 }

@@ -27,8 +27,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,8 +109,12 @@ public class ChatActivity extends AppCompatActivity {
                 String online = dataSnapshot.child("online").getValue().toString();
                 String image = dataSnapshot.child("image").getValue().toString();
 
+                Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mProfileImage);
+
                 if(online.equals("true")){
+
                     mLastSeen.setText(R.string.online);
+
                 } else{
 
                     GetTimeAgo getTimeAgo = new GetTimeAgo();
@@ -166,13 +172,21 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void loadMessages() {
-        mRootRef.child("Messages").child(mCurrentUserId).child(mChatReceiverUser).addChildEventListener(new ChildEventListener() {
+        DatabaseReference messageRef = mRootRef.child("Messages").child(mCurrentUserId).child(mChatReceiverUser);
+
+        //limit to last
+        Query messageQuery = messageRef.limitToLast(5);
+
+        messageQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 Messages message = dataSnapshot.getValue(Messages.class);
                 messagesList.add(message);
                 mAdapter.notifyDataSetChanged();
+
+                //ensure we see the last item on chat
+                mMessageRecyclerView.scrollToPosition(messagesList.size() - 1);
 
             }
 
@@ -215,10 +229,14 @@ public class ChatActivity extends AppCompatActivity {
             messageMap.put("seen", false);
             messageMap.put("type", "text");
             messageMap.put("time", ServerValue.TIMESTAMP);
+            messageMap.put("from", mCurrentUserId);
 
             Map messageUserMap = new HashMap();
             messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
             messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+
+            //set message input to blank
+            mChatMessageView.setText("");
 
             mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                 @Override

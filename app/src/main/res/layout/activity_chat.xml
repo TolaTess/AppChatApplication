@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,48 +9,44 @@
 
     <include
         android:id="@+id/chat_toolbar"
-        layout="@layout/app_bar_layout"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/messages_list"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/app_bar_layout" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messages_list"
-        android:layout_width="413dp"
-        android:layout_height="554dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chat_toolbar">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="68dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="58dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/messages_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chat_toolbar">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="413dp"
-        android:layout_height="71dp"
-        android:layout_below="@id/chat_toolbar"
-        android:layout_alignParentTop="false"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="false"
-        android:layout_marginBottom="50dp"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
-        android:weightSum="10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/messages_list">
+        android:weightSum="10">
 
         <ImageView
             android:id="@+id/chat_add_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:alpha="0.5"
             android:contentDescription="TODO"
             android:padding="10dp"
             app:srcCompat="@android:drawable/ic_input_add" />
@@ -67,6 +63,7 @@
             android:paddingTop="20dp"
             android:paddingRight="10dp"
             android:paddingBottom="12dp"
+            android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />
 
         <ImageView
@@ -74,9 +71,10 @@
             android:layout_width="47dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:alpha="0.5"
             android:contentDescription="TODO"
             android:padding="10dp"
             app:srcCompat="@drawable/share" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
