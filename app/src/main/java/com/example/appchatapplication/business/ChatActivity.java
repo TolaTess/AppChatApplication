@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,8 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.model.Messages;
 import com.example.appchatapplication.utils.GetTimeAgo;
+import com.example.appchatapplication.utils.MessageAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,14 +30,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private String mChatUser;
+    private String mChatReceiverUser;
     private DatabaseReference mRootRef;
     private FirebaseAuth mAuth;
     private String mCurrentUserId;
@@ -47,6 +52,11 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView mChatAddBtn;
     private ImageView mChatSendBtn;
     private EditText mChatMessageView;
+    private RecyclerView mMessageRecyclerView;
+
+    private final List<Messages> messagesList = new ArrayList<>();
+    private LinearLayoutManager mLinearLayout;
+    private MessageAdapter mAdapter;
 
 
     @Override
@@ -54,7 +64,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        mChatUser = getIntent().getStringExtra("user_id");
+        mChatReceiverUser = getIntent().getStringExtra("user_id");
         String userName = getIntent().getStringExtra("username");
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -80,9 +90,18 @@ public class ChatActivity extends AppCompatActivity {
         mChatSendBtn = findViewById(R.id.chat_msg_send);
         mChatMessageView = findViewById(R.id.chat_message_input);
 
+        mAdapter = new MessageAdapter(messagesList);
+
+        mMessageRecyclerView = findViewById(R.id.messages_list);
+        mLinearLayout = new LinearLayoutManager(this);
+        mMessageRecyclerView.setLayoutManager(mLinearLayout);
+        mMessageRecyclerView.setAdapter(mAdapter);
+
+        loadMessages();
+
         mNameView.setText(userName);
 
-        mRootRef.child("Users").child(mChatUser).addValueEventListener(new ValueEventListener() {
+        mRootRef.child("Users").child(mChatReceiverUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String online = dataSnapshot.child("online").getValue().toString();
@@ -109,14 +128,14 @@ public class ChatActivity extends AppCompatActivity {
         mRootRef.child("Chat").child(mCurrentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChild(mChatUser)){
+                if(!dataSnapshot.hasChild(mChatReceiverUser)){
                     Map chatAddMap = new HashMap();
                     chatAddMap.put("seen", false);
                     chatAddMap.put("timestamp", ServerValue.TIMESTAMP);
 
                     Map chatUserMap = new HashMap();
-                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatUser, chatAddMap);
-                    chatUserMap.put("Chat/" + mChatUser + "/" + mCurrentUserId, chatAddMap);
+                    chatUserMap.put("Chat/" + mCurrentUserId + "/" + mChatReceiverUser, chatAddMap);
+                    chatUserMap.put("Chat/" + mChatReceiverUser + "/" + mCurrentUserId, chatAddMap);
 
                     mRootRef.updateChildren(chatUserMap, new DatabaseReference.CompletionListener() {
                         @Override
@@ -145,15 +164,49 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+
+    private void loadMessages() {
+        mRootRef.child("Messages").child(mCurrentUserId).child(mChatReceiverUser).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Messages message = dataSnapshot.getValue(Messages.class);
+                messagesList.add(message);
+                mAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void sendMessage() {
 
         String message = mChatMessageView.getText().toString();
         if(!TextUtils.isEmpty(message)){
-            String current_user_ref = "Messages/" + mCurrentUserId + "/" + mChatUser;
-            String chat_user_ref = "Messages/" + mChatUser + "/" + mCurrentUserId;
+            String current_user_ref = "Messages/" + mCurrentUserId + "/" + mChatReceiverUser;
+            String chat_user_ref = "Messages/" + mChatReceiverUser + "/" + mCurrentUserId;
 
             DatabaseReference user_message_push = mRootRef.child("Messages")
-                    .child(mCurrentUserId).child(mChatUser).push();
+                    .child(mCurrentUserId).child(mChatReceiverUser).push();
 
             String push_id = user_message_push.getKey();
 
