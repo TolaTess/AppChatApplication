@@ -7,13 +7,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".utils.offline.AppChatApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".utils.offline.AppChatApplication">
+        android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +31,9 @@
         <activity android:name=".auth.RegisterActivity" />
         <activity android:name=".StartActivity" />
         <activity android:name=".account.ProfileActivity" />
+        <activity
+            android:name=".business.ChatActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AllUserActivity"
             android:parentActivityName=".MainActivity" />
