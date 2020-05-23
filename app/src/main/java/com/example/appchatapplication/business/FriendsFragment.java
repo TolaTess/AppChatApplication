@@ -2,6 +2,7 @@ package com.example.appchatapplication.business;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.account.ProfileActivity;
 import com.example.appchatapplication.model.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -93,22 +95,22 @@ public class FriendsFragment extends Fragment {
                     }
 
                     @Override
-                    protected void onBindViewHolder(@NonNull final FriendsViewHolder holder, int position, @NonNull final Friends model) {
+                    protected void onBindViewHolder(@NonNull final FriendsViewHolder holder, final int position, @NonNull final Friends model) {
                         Log.d(TAG, "onBindViewHolder: ");
                         holder.setDate(model.getDate_time());
 
-                        String list_user_id = getRef(position).getKey();
+                        final String list_user_id = getRef(position).getKey();
                         mUserDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Log.d(TAG, "onDataChange: ");
 
-                                String userName = dataSnapshot.child("name").getValue().toString();
+                                final String userName = dataSnapshot.child("name").getValue().toString();
                                 String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
-                                //String userOnline = dataSnapshot.child("online").getValue().toString();
 
                                 if(dataSnapshot.hasChild("online")){
-                                    Boolean userOnline = (boolean) dataSnapshot.child("online").getValue();
+
+                                    String userOnline = dataSnapshot.child("online").getValue().toString();
                                     holder.setUserOnline(userOnline);
                                 }
 
@@ -124,6 +126,20 @@ public class FriendsFragment extends Fragment {
                                         builder.setItems(options, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                switch (which){
+                                                    case 0:
+                                                        Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                                        profileIntent.putExtra("user_id", list_user_id); // send user id to use it to get all other info in db
+                                                        startActivity(profileIntent);
+                                                        break;
+                                                    case 1:
+                                                        Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                                        chatIntent.putExtra("user_id", list_user_id);
+                                                        chatIntent.putExtra("username", userName);// send user id to use it to get all other info in db
+                                                        startActivity(chatIntent);
+                                                        break;
+                                                    default:
+                                                }
 
                                             }
                                         });
@@ -176,10 +192,10 @@ public class FriendsFragment extends Fragment {
             CircleImageView mThumbImage = mView.findViewById(R.id.users_image);
             Picasso.get().load(thumb_image).placeholder(R.drawable.ic_launcher_foreground).into(mThumbImage);
         }
-        public void setUserOnline(boolean online_status) {
+        public void setUserOnline(String online_status) {
             ImageView userOnlineView = mView.findViewById(R.id.user_online_icon);
 
-            if(online_status == true){
+            if(online_status.equals("true")){
                 userOnlineView.setVisibility(View.VISIBLE);
             } else{
                 userOnlineView.setVisibility(View.INVISIBLE);
