@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -55,10 +56,17 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView mChatSendBtn;
     private EditText mChatMessageView;
     private RecyclerView mMessageRecyclerView;
+    private SwipeRefreshLayout mRefreshLayout;
 
     private final List<Messages> messagesList = new ArrayList<>();
     private LinearLayoutManager mLinearLayout;
     private MessageAdapter mAdapter;
+
+    private static final int TOTAL_ITEM_TO_LOAD = 5;
+    private int mCurrentPage = 1;
+    private int itemPos = 0;
+    private String mLastKey = "";
+    private String mPreKey = "";
 
 
     @Override
@@ -95,6 +103,7 @@ public class ChatActivity extends AppCompatActivity {
         mAdapter = new MessageAdapter(messagesList);
 
         mMessageRecyclerView = findViewById(R.id.messages_list);
+        mRefreshLayout = findViewById(R.id.swipe_message_layout);
         mLinearLayout = new LinearLayoutManager(this);
         mMessageRecyclerView.setLayoutManager(mLinearLayout);
         mMessageRecyclerView.setAdapter(mAdapter);
@@ -167,7 +176,71 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mCurrentPage++;
+                itemPos = 0;
+                loadMoreMessages();
+            }
+        });
 
+    }
+
+    private void loadMoreMessages(){
+        DatabaseReference messageRef = mRootRef.child("Messages").child(mCurrentUserId).child(mChatReceiverUser);
+
+        //
+        Query messageQuery = messageRef.orderByKey().endAt(mLastKey).limitToLast(TOTAL_ITEM_TO_LOAD);
+
+        messageQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Messages message = dataSnapshot.getValue(Messages.class);
+                String messageKey = dataSnapshot.getKey();
+
+                if(!mPreKey.equals(messageKey)){
+                    messagesList.add(itemPos++, message);
+                } else{
+                    mPreKey = mLastKey;
+                }
+                if(itemPos == 1){
+
+                    mLastKey = messageKey;
+
+                }
+
+                mAdapter.notifyDataSetChanged();
+
+                //ensure we see the last item on chat
+                mMessageRecyclerView.scrollToPosition(messagesList.size() - 1);
+
+                //turn off refreshing
+                mRefreshLayout.setRefreshing(false);
+                //stays at the position rather than going back to size -1
+                mLinearLayout.scrollToPositionWithOffset(10, 0);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -175,18 +248,31 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference messageRef = mRootRef.child("Messages").child(mCurrentUserId).child(mChatReceiverUser);
 
         //limit to last
-        Query messageQuery = messageRef.limitToLast(5);
+        Query messageQuery = messageRef.limitToLast(mCurrentPage * TOTAL_ITEM_TO_LOAD);
 
         messageQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 Messages message = dataSnapshot.getValue(Messages.class);
+
+                itemPos++;
+
+                if(itemPos == 1){
+                    String messageKey = dataSnapshot.getKey();
+                    mLastKey = messageKey;
+                    mPreKey = messageKey;
+
+                }
+
                 messagesList.add(message);
                 mAdapter.notifyDataSetChanged();
 
                 //ensure we see the last item on chat
                 mMessageRecyclerView.scrollToPosition(messagesList.size() - 1);
+
+                //turn off refreshing
+                mRefreshLayout.setRefreshing(false);
 
             }
 
