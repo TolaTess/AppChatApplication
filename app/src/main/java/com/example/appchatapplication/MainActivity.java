@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mUserRef;
+    FirebaseUser mCurrentUser;
     private Toolbar mToolbar;
 
     private ViewPager mViewPager;
@@ -56,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //check if user is logged in
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null)
+        mCurrentUser = mAuth.getCurrentUser();
+        if(mCurrentUser == null)
         {
             sendToStart();
         } else {
@@ -68,7 +69,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mUserRef.child("online").setValue(false);
+        mCurrentUser = mAuth.getCurrentUser();
+
+        if(mCurrentUser != null) {
+            mUserRef.child("online").setValue(false);
+        }
     }
 
     private void sendToStart() {

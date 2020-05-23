@@ -1,5 +1,7 @@
 package com.example.appchatapplication.business;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appchatapplication.R;
@@ -102,9 +105,33 @@ public class FriendsFragment extends Fragment {
 
                                 String userName = dataSnapshot.child("name").getValue().toString();
                                 String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                                //String userOnline = dataSnapshot.child("online").getValue().toString();
+
+                                if(dataSnapshot.hasChild("online")){
+                                    Boolean userOnline = (boolean) dataSnapshot.child("online").getValue();
+                                    holder.setUserOnline(userOnline);
+                                }
 
                                 holder.setName(userName);
                                 holder.setImage(userThumb);
+
+                                holder.mView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        CharSequence options[] = new CharSequence[]{"Open Profile", "Send Message"};
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                        builder.setTitle("Select Options");
+                                        builder.setItems(options, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+                                        builder.show();
+
+                                    }
+                                });
+
                             }
 
                             @Override
@@ -148,6 +175,15 @@ public class FriendsFragment extends Fragment {
         public void setImage(String thumb_image) {
             CircleImageView mThumbImage = mView.findViewById(R.id.users_image);
             Picasso.get().load(thumb_image).placeholder(R.drawable.ic_launcher_foreground).into(mThumbImage);
+        }
+        public void setUserOnline(boolean online_status) {
+            ImageView userOnlineView = mView.findViewById(R.id.user_online_icon);
+
+            if(online_status == true){
+                userOnlineView.setVisibility(View.VISIBLE);
+            } else{
+                userOnlineView.setVisibility(View.INVISIBLE);
+            }
         }
 
     }
