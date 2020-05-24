@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +31,8 @@
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".auth.RegisterActivity" />
         <activity android:name=".StartActivity" />
-        <activity android:name=".account.ProfileActivity" />
+        <activity android:name=".account.ProfileActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".business.chats.ChatActivity"
             android:parentActivityName=".MainActivity" />

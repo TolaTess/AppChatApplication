@@ -10,17 +10,18 @@
         android:id="@+id/received_req_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="10dp"
+        android:fontFamily="@font/aclonica"
         android:text="@string/no_request_msg"
         android:textAlignment="center"
+        android:textSize="24sp"
         android:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allrecived_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/received_req_msg">
+        android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
 
