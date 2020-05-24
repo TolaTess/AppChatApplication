@@ -11,11 +11,13 @@
         android:id="@+id/msg_text_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/msg_display_name"
         android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_below="@+id/msg_display_name"
         android:background="@drawable/message_text_background"
+        android:fontFamily="@font/actor"
         android:padding="15dp"
         android:text="TextView"
         android:textAlignment="textStart"
@@ -27,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:fontFamily="@font/aclonica"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/aldrich"
         android:text="@string/display_name"
         android:textSize="14sp" />
 
@@ -35,10 +38,20 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="28dp"
-        android:text="00.00" />
+        android:layout_alignEnd="@id/msg_display_name"
+        android:layout_marginEnd="-50dp"
+        android:fontFamily="@font/actor"
+        android:text="00.00"
+        android:paddingBottom="5dp"
+        android:alpha="0.5"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/message_image_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="94dp" />
 
 </RelativeLayout>

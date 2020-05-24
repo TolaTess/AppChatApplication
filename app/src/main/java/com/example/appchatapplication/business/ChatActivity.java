@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,6 +24,9 @@ import com.example.appchatapplication.R;
 import com.example.appchatapplication.model.Messages;
 import com.example.appchatapplication.utils.GetTimeAgo;
 import com.example.appchatapplication.utils.MessageAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +36,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,8 +53,11 @@ public class ChatActivity extends AppCompatActivity {
     private String mChatReceiverUser;
     private DatabaseReference mRootRef;
     private FirebaseAuth mAuth;
+    private StorageReference mImageStorage;
     private String mCurrentUserId;
     private Toolbar mToolbar;
+
+    private static final int GALLERY_PICK = 1;
 
     private CircleImageView mProfileImage;
     private TextView mNameView;
@@ -80,6 +91,7 @@ public class ChatActivity extends AppCompatActivity {
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         mCurrentUserId = mAuth.getCurrentUser().getUid();
+        mImageStorage = FirebaseStorage.getInstance().getReference();
 
 
         mToolbar = findViewById(R.id.chat_toolbar);
@@ -176,6 +188,16 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        mChatAddBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "SELECT IMAGE"), GALLERY_PICK);
+            }
+        });
+
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -184,6 +206,51 @@ public class ChatActivity extends AppCompatActivity {
                 loadMoreMessages();
             }
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
+
+            Uri imageUri = data.getData();
+
+            final String current_user_ref = "Messages/" + mCurrentUserId + "/" + mChatReceiverUser;
+            final String chat_user_ref = "Messages/" + mChatReceiverUser + "/" + mCurrentUserId;
+
+            DatabaseReference user_message_push = mRootRef.child("Messages")
+                    .child(mCurrentUserId).child(mChatReceiverUser).push();
+
+            final String push_id = user_message_push.getKey();
+
+            final StorageReference filepath = mImageStorage.child("messages_images")
+                    .child(push_id + ".jpg");
+            filepath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String download_url = uri.toString();
+                            Map messageMap = new HashMap();
+                            messageMap.put("message", download_url);
+                            messageMap.put("seen", false);
+                            messageMap.put("type", "image");
+                            messageMap.put("time", ServerValue.TIMESTAMP);
+                            messageMap.put("from", mCurrentUserId);
+
+                            Map messageUserMap = new HashMap();
+                            messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
+                            messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+
+                        }
+                    });
+                }
+            });
+
+        }
 
     }
 
