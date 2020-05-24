@@ -130,7 +130,8 @@ public class FriendsFragment extends Fragment {
                                                 switch (which){
                                                     case 0:
                                                         Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
-                                                        profileIntent.putExtra("user_id", list_user_id); // send user id to use it to get all other info in db
+                                                        profileIntent.putExtra("user_id", list_user_id);
+                                                        profileIntent.putExtra("username", userName);// send user id to use it to get all other info in db
                                                         startActivity(profileIntent);
                                                         break;
                                                     case 1:

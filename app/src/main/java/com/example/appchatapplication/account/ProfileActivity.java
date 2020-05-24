@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView mDisplayName, mProfileStatus, mProfileFriendsCount;
     private Button mProfileButton, mDeclineButton;
     private ProgressDialog progressDialog;
+    private Toolbar toolbar;
 
     private DatabaseReference mUserDatabase;
     private DatabaseReference mFriendReqDatabase;
@@ -56,6 +58,12 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         final String user_id = getIntent().getStringExtra("user_id");
+        mName = getIntent().getStringExtra("username");
+
+        toolbar = findViewById(R.id.profile_toolbar);
+        setSupportActionBar(toolbar);
+        this.getSupportActionBar().setTitle(mName);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
@@ -89,11 +97,8 @@ public class ProfileActivity extends AppCompatActivity {
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mName = dataSnapshot.child("name").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
                 String image = dataSnapshot.child("image").getValue().toString();
-
-                mDisplayName.setText(mName);
                 mProfileStatus.setText(status);
 
                 Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mProfileImage);
@@ -154,7 +159,7 @@ public class ProfileActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 long friendsCount = dataSnapshot.getChildrenCount();
                                 String stringCount = String.valueOf(friendsCount);
-                                    mProfileFriendsCount.setText("Total Friends " + stringCount);
+                                    mProfileFriendsCount.setText("Total Friends: " + stringCount);
                             }
 
                             @Override
