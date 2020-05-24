@@ -22,4 +22,6 @@
     <string name="no_request_msg">There are no Requests</string>
     <string name="msg_sample_text">hi hun, how are you?</string>
     <string name="accounts">Accounts</string>
+    <string name="accept_req">Accept Friend Request</string>
+    <string name="cancel_req">Cancel Friend Request</string>
 </resources>
