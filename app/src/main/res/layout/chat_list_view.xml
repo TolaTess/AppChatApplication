@@ -43,7 +43,7 @@
         android:textSize="15sp" />
 
     <ImageView
-        android:id="@+id/user_online_icon"
+        android:id="@+id/chat_online_icon"
         android:layout_width="25dp"
         android:layout_height="30dp"
         android:layout_below="@+id/chat_users_image"

@@ -207,7 +207,7 @@ public class ChatFragment extends Fragment {
         }
 
         public void setUserOnline(String online_status) {
-            ImageView userOnlineView = mView.findViewById(R.id.user_online_icon);
+            ImageView userOnlineView = mView.findViewById(R.id.chat_online_icon);
 
             if(online_status.equals("true")){
                 userOnlineView.setVisibility(View.VISIBLE);

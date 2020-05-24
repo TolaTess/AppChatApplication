@@ -40,7 +40,7 @@
         android:textSize="15sp" />
 
     <ImageView
-        android:id="@+id/user_online_icon"
+        android:id="@+id/req_online_icon"
         android:layout_width="25dp"
         android:layout_height="30dp"
         android:layout_below="@+id/req_users_image"
