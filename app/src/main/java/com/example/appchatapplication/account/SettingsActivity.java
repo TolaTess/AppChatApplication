@@ -59,6 +59,7 @@ public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference myDatabaseRef;
     private DatabaseReference mUserRef;
     private StorageReference mStorageRef;
+    String currentUserId;
 
     private ProgressDialog mProgressBar;
 
@@ -79,7 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
         mChangeImage = findViewById(R.id.change_image);
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = mCurrentUser.getUid();
+        currentUserId = mCurrentUser.getUid();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -88,7 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .child(mAuth.getCurrentUser().getUid());
 
         myDatabaseRef = FirebaseDatabase.getInstance()
-                .getReference().child("Users").child(userId);
+                .getReference().child("Users").child(currentUserId);
         //save data offline from firebase
         //add name of app to Manifest (after theme)
         //workes well for String not for image
@@ -251,12 +252,16 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mUserRef.child("online").setValue("true");
+        /*if(currentUserId != null) {
+            myDatabaseRef.child("online").setValue("true");
+        }*/
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
+       /* if(currentUserId != null) {
+            myDatabaseRef.child("online").setValue(ServerValue.TIMESTAMP);
+        }*/
     }
 }

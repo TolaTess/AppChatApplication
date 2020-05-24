@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mUserRef;
-    FirebaseUser mCurrentUser;
+    private FirebaseUser mCurrentUser;
     private Toolbar mToolbar;
 
     private ViewPager mViewPager;
@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+
 
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             mUserRef = FirebaseDatabase.getInstance()
                     .getReference().child("Users")
                     .child(mAuth.getCurrentUser().getUid());
+            mUserRef.child("online").setValue("true");
         }
 
         //Tabs
@@ -61,24 +64,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //check if user is logged in
-        mCurrentUser = mAuth.getCurrentUser();
         if(mCurrentUser == null)
         {
             sendToStart();
-        } else {
-            mUserRef.child("online").setValue("true");
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mCurrentUser = mAuth.getCurrentUser();
-
-        if(mCurrentUser != null) {
-            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
-        }
-    }
 
     private void sendToStart() {
         Intent intent = new Intent(this, StartActivity.class);
