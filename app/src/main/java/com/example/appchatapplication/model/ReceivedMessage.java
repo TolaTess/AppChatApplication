@@ -1,14 +1,14 @@
 package com.example.appchatapplication.model;
 
-public class Messages {
+public class ReceivedMessage {
 
     private String message, type, from;
     private long time;
     private boolean seen;
 
-    public Messages(){}
+    public ReceivedMessage(){}
 
-    public Messages(String messages, String type, long time, boolean seen, String from) {
+    public ReceivedMessage(String messages, String type, long time, boolean seen, String from) {
         this.message = messages;
         this.type = type;
         this.time = time;
