@@ -1,8 +1,5 @@
 package com.example.appchatapplication.business;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,9 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.account.ProfileActivity;
+import com.example.appchatapplication.business.chats.ChatActivity;
 import com.example.appchatapplication.model.Conv;
-import com.example.appchatapplication.model.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;

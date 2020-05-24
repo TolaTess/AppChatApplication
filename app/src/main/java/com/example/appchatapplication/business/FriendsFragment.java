@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.account.ProfileActivity;
+import com.example.appchatapplication.business.chats.ChatActivity;
 import com.example.appchatapplication.model.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;

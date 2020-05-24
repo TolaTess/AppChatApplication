@@ -32,7 +32,7 @@
         <activity android:name=".StartActivity" />
         <activity android:name=".account.ProfileActivity" />
         <activity
-            android:name=".business.ChatActivity"
+            android:name=".business.chats.ChatActivity"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AllUserActivity"
