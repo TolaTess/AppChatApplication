@@ -5,13 +5,15 @@
     android:layout_height="match_parent"
     android:layout_centerInParent="true"
     android:layout_centerHorizontal="false"
+    android:background="@color/colorPrimary"
     tools:context=".business.ChatFragment">
 
-    <TextView
-        android:id="@+id/align"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Welcome to Chat Page"
-        android:textAlignment="center" />
+   <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/conv_list"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       >
+
+   </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>
