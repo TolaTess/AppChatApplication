@@ -4,49 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
     android:padding="20dp">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/users_image"
+        android:id="@+id/chat_users_image"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:layout_marginStart="20dp"
         android:layout_alignParentTop="true"/>
 
     <TextView
-        android:id="@+id/users_name"
+        android:id="@+id/chat_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/aclonica"
         android:text="@string/display_name"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorAccent"
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/users_status"
+        android:id="@+id/chat_conv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/users_name"
+        android:layout_below="@id/chat_username"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
         android:fontFamily="@font/actor"
-        android:text="@string/user_status"
-        android:textColor="@color/colorBlack"
+        android:text="last message"
+        android:textColor="@color/colorAccent"
         android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/user_online_icon"
         android:layout_width="25dp"
         android:layout_height="30dp"
-        android:layout_below="@+id/users_image"
+        android:layout_below="@+id/chat_users_image"
         android:layout_marginStart="105dp"
         android:layout_marginTop="-30dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:visibility="invisible" />
+
 </RelativeLayout>
