@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -146,7 +147,23 @@ public class ProfileActivity extends AppCompatActivity {
 
                             }
                         });
+
+                mRootRef.child("Friends").child(user_id)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                long friendsCount = dataSnapshot.getChildrenCount();
+                                String stringCount = String.valueOf(friendsCount);
+                                    mProfileFriendsCount.setText("Total Friends " + stringCount);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -191,9 +208,7 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                 }
 
-                // cancel request section
-                //don't forget to handle errors = best to use oncompleteL so you can use if else or use onFailure with on
-                //SucessL
+                //cancel request section
                 if (mCurrent_state.equals("req_sent")) {
 
                     Map friendMap = new HashMap();
