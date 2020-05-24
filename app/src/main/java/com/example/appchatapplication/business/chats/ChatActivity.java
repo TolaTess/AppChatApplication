@@ -1,4 +1,4 @@
-package com.example.appchatapplication.business;
+package com.example.appchatapplication.business.chats;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,14 +16,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.model.Messages;
+import com.example.appchatapplication.model.ReceivedMessage;
 import com.example.appchatapplication.utils.GetTimeAgo;
-import com.example.appchatapplication.utils.MessageAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -63,13 +63,12 @@ public class ChatActivity extends AppCompatActivity {
     private TextView mNameView;
     private TextView mLastSeen;
 
-    private ImageView mChatAddBtn;
-    private ImageView mChatSendBtn;
+    private Button mChatSendBtn;
     private EditText mChatMessageView;
     private RecyclerView mMessageRecyclerView;
     private SwipeRefreshLayout mRefreshLayout;
 
-    private final List<Messages> messagesList = new ArrayList<>();
+    private final List<ReceivedMessage> messagesList = new ArrayList<>();
     private LinearLayoutManager mLinearLayout;
     private MessageAdapter mAdapter;
 
@@ -96,10 +95,8 @@ public class ChatActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.chat_toolbar);
         setSupportActionBar(mToolbar);
-        //ActionBar actionBar = getSupportActionBar();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
-        //this.getSupportActionBar().setTitle(userName);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View action_bar_view = inflater.inflate(R.layout.chat_custom_bar, null);
@@ -108,7 +105,6 @@ public class ChatActivity extends AppCompatActivity {
         mNameView = findViewById(R.id.custom_bar_name);
         mLastSeen = findViewById(R.id.last_seen);
         mProfileImage = findViewById(R.id.custom_bar_image);
-        mChatAddBtn = findViewById(R.id.chat_add_btn);
         mChatSendBtn = findViewById(R.id.chat_msg_send);
         mChatMessageView = findViewById(R.id.chat_message_input);
 
@@ -188,16 +184,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        mChatAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "SELECT IMAGE"), GALLERY_PICK);
-            }
-        });
-
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -263,7 +249,7 @@ public class ChatActivity extends AppCompatActivity {
         messageQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Messages message = dataSnapshot.getValue(Messages.class);
+                ReceivedMessage message = dataSnapshot.getValue(ReceivedMessage.class);
                 String messageKey = dataSnapshot.getKey();
 
                 if(!mPreKey.equals(messageKey)){
@@ -321,7 +307,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                Messages message = dataSnapshot.getValue(Messages.class);
+                ReceivedMessage message = dataSnapshot.getValue(ReceivedMessage.class);
 
                 itemPos++;
 
