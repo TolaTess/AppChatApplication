@@ -18,9 +18,7 @@ import com.example.appchatapplication.auth.LoginActivity;
 import com.example.appchatapplication.auth.RegisterActivity;
 
 public class StartActivity extends AppCompatActivity {
-    //private static int SPLASH_SCREEN = 5000;
 
-    //Variables
     Animation topAnimation, bottomAnimation, alphaAnimation;
 
     @Override

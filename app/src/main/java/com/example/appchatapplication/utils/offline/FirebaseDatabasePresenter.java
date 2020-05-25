@@ -19,7 +19,7 @@ public class FirebaseDatabasePresenter {
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mNotification;
     private DatabaseReference mRootRef;
-    private DatabaseReference mUserRef;
+    private DatabaseReference mOnlineDbRef;
 
     private FirebaseAuthPresenter presenter;
 
@@ -38,6 +38,18 @@ public class FirebaseDatabasePresenter {
         mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
         mNotification = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
+
+        presenter = new FirebaseAuthPresenter(mContext);
+        presenter.setupFirebaseAuth();
+        if (presenter.getmAuth().getCurrentUser() != null) {
+            mcurrent_user_id = presenter.getmAuth().getCurrentUser().getUid();
+        }
+    }
+
+    public FirebaseDatabasePresenter(Context context){
+        this.mContext = context;
+        mOnlineDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mcurrent_user_id)
+                .child("online");
         presenter = new FirebaseAuthPresenter(mContext);
         presenter.setupFirebaseAuth();
         if (presenter.getmAuth().getCurrentUser() != null) {
@@ -65,8 +77,8 @@ public class FirebaseDatabasePresenter {
         return mRootRef;
     }
 
-    public DatabaseReference getmUserRef() {
-        return mUserRef;
+    public DatabaseReference getmOnlineDbRef() {
+        return mOnlineDbRef;
     }
 
     public Map setupFriendReq(){

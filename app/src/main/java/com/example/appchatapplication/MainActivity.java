@@ -15,17 +15,13 @@ import com.example.appchatapplication.account.SettingsActivity;
 import com.example.appchatapplication.utils.CustomPagerAdapter;
 import com.example.appchatapplication.utils.FirebaseAuthPresenter;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
-    private FirebaseUser mCurrent_user_id;
 
     private FirebaseAuthPresenter presenter;
 
@@ -44,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         presenter = new FirebaseAuthPresenter(mContext);
         presenter.setupFirebaseAuth();
 
-
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("App Chat");
@@ -54,10 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     .getReference().child("Users")
                     .child(presenter.getmAuth().getCurrentUser().getUid());
             mUserDatabase.child("online").setValue("true");
-           //presenter.checkUserIsOnline();
         }
-        //presenter.checkUserIsOnline("true");
-
         //Tabs
         mViewPager = findViewById(R.id.main_view_pager);
         customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
