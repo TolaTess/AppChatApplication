@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.utils.IntentPresenter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import id.zelory.compressor.Compressor;
@@ -54,6 +57,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button mStatusButton;
     private Button mChangeImage;
+    private IntentPresenter intentPresenter;
+    private Context mContext = SettingsActivity.this;
 
     private FirebaseUser mCurrentUser;
     private DatabaseReference myDatabaseRef;
@@ -78,6 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
         mStatus = findViewById(R.id.text_status);
         mStatusButton = findViewById(R.id.change_status);
         mChangeImage = findViewById(R.id.change_image);
+        intentPresenter = new IntentPresenter(mContext);
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         currentUserId = mCurrentUser.getUid();
@@ -136,11 +142,9 @@ public class SettingsActivity extends AppCompatActivity {
         mStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //persist data
                 String statusValue = mStatus.getText().toString();
-                Intent statusIntent = new Intent(SettingsActivity.this, StatusActivity.class);
-                statusIntent.putExtra("status_value", statusValue);
-                startActivity(statusIntent);
+                intentPresenter.presentIntent("Status", statusValue);
+
             }
         });
 
@@ -249,19 +253,4 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        /*if(currentUserId != null) {
-            myDatabaseRef.child("online").setValue("true");
-        }*/
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-       /* if(currentUserId != null) {
-            myDatabaseRef.child("online").setValue(ServerValue.TIMESTAMP);
-        }*/
-    }
 }

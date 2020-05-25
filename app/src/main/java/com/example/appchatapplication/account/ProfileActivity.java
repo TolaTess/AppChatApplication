@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.utils.FirebaseAuthPresenter;
+import com.example.appchatapplication.utils.IntentPresenter;
 import com.example.appchatapplication.utils.offline.FirebaseDatabasePresenter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
      private FirebaseUser mCurrentuser;*/
     private FirebaseDatabasePresenter databasePresenter;
     private Context mContext = ProfileActivity.this;
+    private IntentPresenter intentPresenter;
 
     private String mCurrent_state;
     private String mName;
@@ -75,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         setupToolbar();
         databasePresenter = new FirebaseDatabasePresenter(mContext, user_id);
+        intentPresenter = new IntentPresenter(mContext);
 
         mDisplayName = findViewById(R.id.profile_name);
         mProfileStatus = findViewById(R.id.profile_status);
@@ -189,9 +192,10 @@ public class ProfileActivity extends AppCompatActivity {
                 //friends request section
                 if (databasePresenter.getMcurrent_user_id().equals(user_id)) {
                     mRequestButton.setText(R.string.accounts); // bug
-                    Intent settingIntent = new Intent(ProfileActivity.this, SettingsActivity.class);
+                    /*Intent settingIntent = new Intent(ProfileActivity.this, SettingsActivity.class);
                     settingIntent.putExtra("user_id", databasePresenter.getMcurrent_user_id());// send user id to use it to get all other info in db
-                    startActivity(settingIntent);
+                    startActivity(settingIntent);*/
+                    intentPresenter.presentIntent("Setting", databasePresenter.getMcurrent_user_id());
                 } else {
 
                     switch (mCurrent_state) {
