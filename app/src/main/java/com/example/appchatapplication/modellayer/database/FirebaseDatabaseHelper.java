@@ -1,8 +1,7 @@
-package com.example.appchatapplication.utils.offline;
+package com.example.appchatapplication.modellayer.database;
 
 import android.content.Context;
 
-import com.example.appchatapplication.utils.FirebaseAuthPresenter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -11,7 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirebaseDatabasePresenter {
+public class FirebaseDatabaseHelper {
     private static final String TAG = "FirebaseDatabasePresent";
 
     private DatabaseReference mUserProfileDatabase;
@@ -19,9 +18,9 @@ public class FirebaseDatabasePresenter {
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mNotification;
     private DatabaseReference mRootRef;
-    private DatabaseReference mOnlineDbRef;
+    private DatabaseReference mUserDatabase;
 
-    private FirebaseAuthPresenter presenter;
+    private FirebaseAuthHelper presenter;
 
     private String muser_id;
     private String mcurrent_user_id;
@@ -29,28 +28,18 @@ public class FirebaseDatabasePresenter {
 
     private Context mContext;
 
-    public FirebaseDatabasePresenter(Context mContext, String user_id) {
+    public FirebaseDatabaseHelper(Context mContext, String user_id) {
         this.mContext = mContext;
         this.muser_id = user_id;
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mUserProfileDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(muser_id);
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_Req");
         mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
         mNotification = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
 
-        presenter = new FirebaseAuthPresenter(mContext);
-        presenter.setupFirebaseAuth();
-        if (presenter.getmAuth().getCurrentUser() != null) {
-            mcurrent_user_id = presenter.getmAuth().getCurrentUser().getUid();
-        }
-    }
-
-    public FirebaseDatabasePresenter(Context context){
-        this.mContext = context;
-        mOnlineDbRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mcurrent_user_id)
-                .child("online");
-        presenter = new FirebaseAuthPresenter(mContext);
+        presenter = new FirebaseAuthHelper(mContext);
         presenter.setupFirebaseAuth();
         if (presenter.getmAuth().getCurrentUser() != null) {
             mcurrent_user_id = presenter.getmAuth().getCurrentUser().getUid();
@@ -77,8 +66,8 @@ public class FirebaseDatabasePresenter {
         return mRootRef;
     }
 
-    public DatabaseReference getmOnlineDbRef() {
-        return mOnlineDbRef;
+    public DatabaseReference getmUserDatabase() {
+        return mUserDatabase;
     }
 
     public Map setupFriendReq(){

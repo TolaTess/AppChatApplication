@@ -15,7 +15,7 @@ import com.example.appchatapplication.activities.allusers.AllUserActivity;
 import com.example.appchatapplication.activities.settings.SettingsActivity;
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.helpers.CustomPagerAdapter;
-import com.example.appchatapplication.helpers.FirebaseAuthHelper;
+import com.example.appchatapplication.modellayer.database.FirebaseAuthHelper;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

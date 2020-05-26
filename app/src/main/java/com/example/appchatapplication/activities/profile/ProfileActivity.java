@@ -17,7 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
-import com.example.appchatapplication.helpers.FirebaseDatabaseHelper;
+import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
