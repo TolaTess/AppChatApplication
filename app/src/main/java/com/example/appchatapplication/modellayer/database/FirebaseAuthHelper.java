@@ -1,43 +1,28 @@
 package com.example.appchatapplication.modellayer.database;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-
-import com.example.appchatapplication.activities.home.StartActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FirebaseAuthHelper {
 
-    private Context mContext;
-    private Activity mActivity;
     private FirebaseAuth mAuth;
-    private String mcurrent_user_id;
+    private FirebaseUser mcurrent_user;
 
-    public FirebaseAuthHelper(Context context) {
-        this.mContext = context;
-        mActivity = (Activity) context;
+    public FirebaseAuthHelper() {
         mAuth = FirebaseAuth.getInstance();
-        mcurrent_user_id = mAuth.getCurrentUser().getUid();
     }
 
     public FirebaseAuth getmAuth() {
         return mAuth;
     }
 
-    public String getMcurrent_user_id() {
-        return mcurrent_user_id;
+    public FirebaseUser getMcurrent_user() {
+        return mcurrent_user;
     }
 
-    public void sendToStart() {
-        Intent intent = new Intent(mContext.getApplicationContext(), StartActivity.class);
-        mContext.startActivity(intent);
-        mActivity.finish();
-    }
-
-    public void setupFirebaseAuth(){
+    public void setupFirebase(){
         mAuth = FirebaseAuth.getInstance();
+        mcurrent_user = mAuth.getCurrentUser();
     }
-
 
 }

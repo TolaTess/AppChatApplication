@@ -1,7 +1,6 @@
 package com.example.appchatapplication.activities.allusers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.activities.profile.ProfileActivity;
-import com.example.appchatapplication.modellayer.database.FirebaseAuthHelper;
+import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.example.appchatapplication.modellayer.model.Users;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -25,16 +23,16 @@ public class AllUserPresenterImpl implements AllUserPresenter{
     private static final String TAG = "AllUserPresenterImpl";
 
     private FirebaseDatabaseHelper databaseHelper;
-    private FirebaseAuthHelper helper;
     private FirebaseRecyclerAdapter adapter;
+    private IntentPresenter intentPresenter;
     private Context mContext;
     private RecyclerView mUserList;
 
     public AllUserPresenterImpl(Context context, RecyclerView mUserList) {
         mContext = context;
-        helper = new FirebaseAuthHelper(context);
-        databaseHelper = new FirebaseDatabaseHelper(context, helper.getMcurrent_user_id());
         this.mUserList = mUserList;
+        databaseHelper = new FirebaseDatabaseHelper();
+        intentPresenter = new IntentPresenter(mContext);
     }
 
     public FirebaseRecyclerAdapter getAdapter() {
@@ -87,10 +85,7 @@ public class AllUserPresenterImpl implements AllUserPresenter{
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent profileIntent = new Intent(mContext, ProfileActivity.class);
-                        profileIntent.putExtra("user_id", userid);
-                        profileIntent.putExtra("username", name);// send user id to use it to get all other info in db
-                        mContext.startActivity(profileIntent);
+                        intentPresenter.presentIntent("Profile", userid, name);
                     }
                 });
 

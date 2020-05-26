@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.start.HomeActivity"
+        <activity android:name=".activities.home.HomeActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,18 +27,18 @@
             android:parentActivityName=".activities.settings.SettingsActivity" />
         <activity
             android:name=".activities.settings.SettingsActivity"
-            android:parentActivityName=".activities.start.HomeActivity" />
+            android:parentActivityName=".activities.home.HomeActivity" />
         <activity android:name=".activities.auth.LoginActivity" />
         <activity android:name=".activities.auth.RegisterActivity" />
-        <activity android:name=".activities.home.StartActivity" />
+        <activity android:name=".activities.start.StartActivity" />
         <activity android:name=".activities.profile.ProfileActivity"
-            android:parentActivityName=".activities.start.HomeActivity"/>
+            android:parentActivityName=".activities.home.HomeActivity"/>
         <activity
             android:name=".activities.chat.ChatActivity"
-            android:parentActivityName=".activities.start.HomeActivity" />
+            android:parentActivityName=".activities.home.HomeActivity" />
         <activity
             android:name=".activities.allusers.AllUserActivity"
-            android:parentActivityName=".activities.start.HomeActivity" />
+            android:parentActivityName=".activities.home.HomeActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

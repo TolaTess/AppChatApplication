@@ -87,7 +87,6 @@ public class MessageAdapter extends RecyclerView.Adapter{
 
     private void getUserDetails(@NonNull final RecyclerView.ViewHolder holder, ReceivedMessage messages) {
         String from_user = messages.getFrom();
-        //String message_type = messages.getType();
         mUserDatabse = FirebaseDatabase.getInstance().getReference()
                 .child("Users").child(from_user);
 
@@ -161,27 +160,4 @@ public class MessageAdapter extends RecyclerView.Adapter{
 
     }
 
-       /*if(message_type.equals("text")){
-        holder.messagesText.setText(messages.getMessage());
-        holder.messageImage.setVisibility(View.INVISIBLE);
-        if(from_user.equals(current_user_id)) {
-            holder.messagesText.setBackgroundResource(R.drawable.sent_msg_background);
-            holder.messagesText.setTextColor(Color.BLACK);
-            holder.messagesText.setGravity(Gravity.RIGHT);
-        }else{
-
-            holder.messagesText.setBackgroundResource(R.drawable.received_msg_background);
-            holder.messagesText.setTextColor(Color.BLACK);
-        }
-    } else {
-        holder.messagesText.setVisibility(View.INVISIBLE);
-    }
-        if(message_type.equals("image")){
-        holder.messageImage.setVisibility(View.VISIBLE);
-        Picasso.get().load(messages.getMessage())
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .into(holder.messageImage);
-    } else{
-        holder.messageImage.setVisibility(View.INVISIBLE);
-    }*/
 }

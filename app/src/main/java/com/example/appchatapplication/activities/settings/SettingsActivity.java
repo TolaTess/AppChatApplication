@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.modellayer.database.FirebaseAuthHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -59,6 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
     private Context mContext = SettingsActivity.this;
 
     private FirebaseUser mCurrentUser;
+    private FirebaseAuthHelper helper;
     private DatabaseReference myDatabaseRef;
     private DatabaseReference mUserRef;
     private StorageReference mStorageRef;
@@ -70,6 +72,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+       helper = new FirebaseAuthHelper();
+       helper.setupFirebase();
 
         toolbar = findViewById(R.id.setting_toolbar);
         setSupportActionBar(toolbar);
@@ -93,7 +98,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .child(mAuth.getCurrentUser().getUid());
 
         myDatabaseRef = FirebaseDatabase.getInstance()
-                .getReference().child("Users").child(currentUserId);
+                .getReference().child("Users").child(helper.getMcurrent_user().getUid());
         //save data offline from firebase
         //add name of app to Manifest (after theme)
         //workes well for String not for image
