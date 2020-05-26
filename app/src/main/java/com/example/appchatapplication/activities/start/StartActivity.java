@@ -1,6 +1,6 @@
-package com.example.appchatapplication.activities.home;
+package com.example.appchatapplication.activities.start;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,13 +13,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.appchatapplication.activities.auth.LoginActivity;
-import com.example.appchatapplication.activities.auth.RegisterActivity;
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.coordinator.IntentPresenter;
 
 public class StartActivity extends AppCompatActivity {
 
-    Animation topAnimation, bottomAnimation, alphaAnimation;
+    private IntentPresenter intentPresenter;
+    private Context mContext = StartActivity.this;
+    private Animation topAnimation, bottomAnimation, alphaAnimation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +28,13 @@ public class StartActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_start);
 
+        intentPresenter = new IntentPresenter(mContext);
+
+        attachUI();
+
+    }
+
+    private void attachUI() {
         Button regBtn = findViewById(R.id.reg_button);
         Button loginBtn = findViewById(R.id.login_btn);
         TextView title = findViewById(R.id.text);
@@ -45,18 +53,15 @@ public class StartActivity extends AppCompatActivity {
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StartActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                intentPresenter.presentIntent("Register", null, null);
             }
         });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StartActivity.this, LoginActivity.class);
-                startActivity(intent);
+               intentPresenter.presentIntent("Login", null, null);
             }
         });
-
     }
 }

@@ -1,7 +1,6 @@
-package com.example.appchatapplication.activities.start;
+package com.example.appchatapplication.activities.home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,63 +10,69 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.appchatapplication.activities.allusers.AllUserActivity;
-import com.example.appchatapplication.activities.settings.SettingsActivity;
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.helpers.CustomPagerAdapter;
-import com.example.appchatapplication.modellayer.database.FirebaseAuthHelper;
+import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private DatabaseReference mUserDatabase;
+    private FirebaseDatabaseHelper databaseHelper;
+    private IntentPresenter intentPresenter;
 
-    private FirebaseAuthHelper presenter;
-
-    private Toolbar mToolbar;
     private Context mContext = HomeActivity.this;
 
     private ViewPager mViewPager;
     private CustomPagerAdapter customPagerAdapter;
     private TabLayout tabLayout;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        presenter = new FirebaseAuthHelper(mContext);
-        presenter.setupFirebaseAuth();
+        databaseHelper = new FirebaseDatabaseHelper();
+        intentPresenter = new IntentPresenter(mContext);
 
-        mToolbar = findViewById(R.id.main_page_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("App Chat");
+        setupToolbar();
+        onlineCheck();
+        attachUI();
 
-        if(presenter.getmAuth().getCurrentUser() != null){
-            mUserDatabase = FirebaseDatabase.getInstance()
-                    .getReference().child("Users")
-                    .child(presenter.getmAuth().getCurrentUser().getUid());
-            mUserDatabase.child("online").setValue("true");
-        }
+    }
+
+    private void attachUI() {
         //Tabs
         mViewPager = findViewById(R.id.main_view_pager);
         customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(customPagerAdapter);
         tabLayout = findViewById(R.id.main_tabs);
         tabLayout.setupWithViewPager(mViewPager);
+    }
 
+    private void onlineCheck() {
+        if(databaseHelper.getMcurrent_user_id() != null){
+            databaseHelper.getmUserDatabase().child(databaseHelper.getMcurrent_user_id())
+            .child("online").setValue("true");
+        }
+    }
+
+    private void setupToolbar() {
+        Toolbar mToolbar = findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("App Chat");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(presenter.getmAuth().getCurrentUser() == null)
-       presenter.sendToStart();
+        //
+        if (databaseHelper.getHelper().getMcurrent_user() == null) {
+            intentPresenter.presentIntent("Start", null, null);
+        }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,17 +87,16 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         if(item.getItemId() == R.id.main_logout_btn){
-            presenter.getmAuth().signOut();
-            mUserDatabase.child("online").setValue(ServerValue.TIMESTAMP);
-            presenter.sendToStart();
+            databaseHelper.getHelper().getmAuth().signOut();
+            databaseHelper.getmUserDatabase().child(databaseHelper.getMcurrent_user_id())
+                    .child("online").setValue(ServerValue.TIMESTAMP);
+            intentPresenter.presentIntent("Start", null, null);
         }
         if(item.getItemId() == R.id.main_setting_btn){
-            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
-            startActivity(intent);
+            intentPresenter.presentIntent("Setting", null, null);
         }
         if(item.getItemId() == R.id.main_all_user_btn){
-            Intent usersIntent = new Intent(HomeActivity.this, AllUserActivity.class);
-            startActivity(usersIntent);
+            intentPresenter.presentIntent("AllUsers", null, null);
         }
         return true;
     }
