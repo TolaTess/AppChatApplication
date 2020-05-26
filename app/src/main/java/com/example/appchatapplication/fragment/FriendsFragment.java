@@ -1,15 +1,8 @@
-package com.example.appchatapplication.business;
+package com.example.appchatapplication.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.account.ProfileActivity;
-import com.example.appchatapplication.business.chats.ChatActivity;
-import com.example.appchatapplication.model.Friends;
+import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.modellayer.model.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +38,7 @@ public class FriendsFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mUserDatabase;
+    private IntentPresenter intentPresenter;
     FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsAdapter;
 
     private String mCurrentUserID;
@@ -61,6 +59,8 @@ public class FriendsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         mCurrentUserID = mAuth.getCurrentUser().getUid();
+
+        intentPresenter = new IntentPresenter(getContext());
 
 
         //mFriendsList.setHasFixedSize(true);
@@ -129,16 +129,10 @@ public class FriendsFragment extends Fragment {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 switch (which){
                                                     case 0:
-                                                        Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
-                                                        profileIntent.putExtra("user_id", list_user_id);
-                                                        profileIntent.putExtra("username", userName);// send user id to use it to get all other info in db
-                                                        startActivity(profileIntent);
+                                                       intentPresenter.presentIntent("Profile", list_user_id, userName);
                                                         break;
                                                     case 1:
-                                                        Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                                        chatIntent.putExtra("user_id", list_user_id);
-                                                        chatIntent.putExtra("username", userName);// send user id to use it to get all other info in db
-                                                        startActivity(chatIntent);
+                                                        intentPresenter.presentIntent("Chats", list_user_id, userName);
                                                         break;
                                                     default:
                                                 }
