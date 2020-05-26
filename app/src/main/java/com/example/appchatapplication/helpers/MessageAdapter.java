@@ -1,4 +1,4 @@
-package com.example.appchatapplication.business.chats;
+package com.example.appchatapplication.helpers;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.model.ReceivedMessage;
+import com.example.appchatapplication.modellayer.model.ReceivedMessage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -1,4 +1,4 @@
-package com.example.appchatapplication;
+package com.example.appchatapplication.activities.start;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,22 +11,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.appchatapplication.account.SettingsActivity;
-import com.example.appchatapplication.utils.CustomPagerAdapter;
-import com.example.appchatapplication.utils.FirebaseAuthPresenter;
+import com.example.appchatapplication.activities.allusers.AllUserActivity;
+import com.example.appchatapplication.activities.settings.SettingsActivity;
+import com.example.appchatapplication.R;
+import com.example.appchatapplication.helpers.CustomPagerAdapter;
+import com.example.appchatapplication.helpers.FirebaseAuthHelper;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private DatabaseReference mUserDatabase;
 
-    private FirebaseAuthPresenter presenter;
+    private FirebaseAuthHelper presenter;
 
     private Toolbar mToolbar;
-    private Context mContext = MainActivity.this;
+    private Context mContext = HomeActivity.this;
 
     private ViewPager mViewPager;
     private CustomPagerAdapter customPagerAdapter;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        presenter = new FirebaseAuthPresenter(mContext);
+        presenter = new FirebaseAuthHelper(mContext);
         presenter.setupFirebaseAuth();
 
         mToolbar = findViewById(R.id.main_page_toolbar);
@@ -85,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
             presenter.sendToStart();
         }
         if(item.getItemId() == R.id.main_setting_btn){
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(intent);
         }
         if(item.getItemId() == R.id.main_all_user_btn){
-            Intent usersIntent = new Intent(MainActivity.this, AllUserActivity.class);
+            Intent usersIntent = new Intent(HomeActivity.this, AllUserActivity.class);
             startActivity(usersIntent);
         }
         return true;

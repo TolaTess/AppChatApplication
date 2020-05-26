@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".account.SettingsActivity">
+    tools:context=".activities.profile.SettingsActivity">
 
     <include layout="@layout/app_bar_layout" android:id="@+id/setting_toolbar"/>
 

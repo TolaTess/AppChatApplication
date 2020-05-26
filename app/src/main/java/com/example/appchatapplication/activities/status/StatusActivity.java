@@ -1,4 +1,4 @@
-package com.example.appchatapplication.account;
+package com.example.appchatapplication.activities.status;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

@@ -1,13 +1,13 @@
-package com.example.appchatapplication.utils;
+package com.example.appchatapplication.helpers;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.appchatapplication.business.ChatFragment;
-import com.example.appchatapplication.business.FriendsFragment;
-import com.example.appchatapplication.business.RequestFragment;
+import com.example.appchatapplication.fragment.ChatFragment;
+import com.example.appchatapplication.fragment.FriendsFragment;
+import com.example.appchatapplication.fragment.RequestFragment;
 
 public class CustomPagerAdapter extends FragmentPagerAdapter {
 

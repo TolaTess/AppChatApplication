@@ -1,7 +1,6 @@
-package com.example.appchatapplication;
+package com.example.appchatapplication.activities.home;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,8 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.appchatapplication.auth.LoginActivity;
-import com.example.appchatapplication.auth.RegisterActivity;
+import com.example.appchatapplication.activities.auth.LoginActivity;
+import com.example.appchatapplication.activities.auth.RegisterActivity;
+import com.example.appchatapplication.R;
 
 public class StartActivity extends AppCompatActivity {
 

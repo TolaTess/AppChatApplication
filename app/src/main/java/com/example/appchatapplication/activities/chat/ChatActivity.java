@@ -1,12 +1,4 @@
-package com.example.appchatapplication.business.chats;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+package com.example.appchatapplication.activities.chat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,12 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.model.ReceivedMessage;
-import com.example.appchatapplication.utils.GetTimeAgo;
+import com.example.appchatapplication.helpers.MessageAdapter;
+import com.example.appchatapplication.modellayer.model.ReceivedMessage;
+import com.example.appchatapplication.helpers.GetTimeAgo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

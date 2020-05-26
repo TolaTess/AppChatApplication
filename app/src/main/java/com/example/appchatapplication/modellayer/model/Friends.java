@@ -1,4 +1,4 @@
-package com.example.appchatapplication.model;
+package com.example.appchatapplication.modellayer.model;
 
 public class Friends {
 

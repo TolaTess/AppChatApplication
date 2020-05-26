@@ -1,4 +1,4 @@
-package com.example.appchatapplication.utils;
+package com.example.appchatapplication.helpers;
 
 import android.app.Application;
 import android.content.Context;

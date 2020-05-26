@@ -1,4 +1,4 @@
-package com.example.appchatapplication.business;
+package com.example.appchatapplication.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.account.ProfileActivity;
-import com.example.appchatapplication.model.Requests;
+import com.example.appchatapplication.activities.profile.ProfileActivity;
+import com.example.appchatapplication.modellayer.model.Requests;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,8 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.example.appchatapplication.R.color.colorPrimary;
 
 
 public class RequestFragment extends Fragment {

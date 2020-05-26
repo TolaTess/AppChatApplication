@@ -1,8 +1,7 @@
-package com.example.appchatapplication.account;
+package com.example.appchatapplication.activities.profile;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,23 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.utils.FirebaseAuthPresenter;
-import com.example.appchatapplication.utils.IntentPresenter;
-import com.example.appchatapplication.utils.offline.FirebaseDatabasePresenter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.helpers.FirebaseDatabaseHelper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
@@ -59,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
      private DatabaseReference mRootRef;
      private DatabaseReference mUserRef;
      private FirebaseUser mCurrentuser;*/
-    private FirebaseDatabasePresenter databasePresenter;
+    private FirebaseDatabaseHelper databasePresenter;
     private Context mContext = ProfileActivity.this;
     private IntentPresenter intentPresenter;
 
@@ -76,7 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
         mName = getIntent().getStringExtra("username");
 
         setupToolbar();
-        databasePresenter = new FirebaseDatabasePresenter(mContext, user_id);
+        databasePresenter = new FirebaseDatabaseHelper(mContext, user_id);
         intentPresenter = new IntentPresenter(mContext);
 
         mDisplayName = findViewById(R.id.profile_name);
@@ -195,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
                     /*Intent settingIntent = new Intent(ProfileActivity.this, SettingsActivity.class);
                     settingIntent.putExtra("user_id", databasePresenter.getMcurrent_user_id());// send user id to use it to get all other info in db
                     startActivity(settingIntent);*/
-                    intentPresenter.presentIntent("Setting", databasePresenter.getMcurrent_user_id());
+                    intentPresenter.presentIntent("Setting", databasePresenter.getMcurrent_user_id(), null);
                 } else {
 
                     switch (mCurrent_state) {
