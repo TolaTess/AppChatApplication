@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.appchatapplication.fragment.ChatFragment;
-import com.example.appchatapplication.fragment.FriendsFragment;
-import com.example.appchatapplication.fragment.RequestFragment;
+import com.example.appchatapplication.fragment.chats.ChatFragment;
+import com.example.appchatapplication.fragment.friends.FriendsFragment;
+import com.example.appchatapplication.fragment.request.RequestFragment;
 
 public class CustomPagerAdapter extends FragmentPagerAdapter {
 

@@ -131,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 long friendsCount = dataSnapshot.getChildrenCount();
                                 String stringCount = String.valueOf(friendsCount);
-                                String friendsCountDisplay = getString(R.string.total_friends) + stringCount;
+                                String friendsCountDisplay = getString(R.string.total_friends) + getString(R.string.space) + stringCount;
                                 mProfileFriendsCount.setText(friendsCountDisplay);
                             }
 
@@ -180,7 +180,7 @@ public class ProfileActivity extends AppCompatActivity {
                             databaseHelper.loadDatabase(mContext, user_id, State.request_received);
                             btnSettings();
                             mCurrent_state = State.friend;
-                            String removefriendsDisplay = getString(R.string.remove_name) + mName;
+                            String removefriendsDisplay = getString(R.string.remove_name) + getString(R.string.space) + mName;
                             mRequestButton.setText(removefriendsDisplay);
                             break;
                         case request_sent:

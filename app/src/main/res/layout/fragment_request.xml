@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".fragment.RequestFragment">
+    tools:context=".fragment.request.RequestFragment">
 
     <TextView
         android:id="@+id/received_req_msg"
