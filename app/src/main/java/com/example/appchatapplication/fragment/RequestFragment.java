@@ -1,14 +1,7 @@
 package com.example.appchatapplication.fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.activities.profile.ProfileActivity;
+import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.example.appchatapplication.modellayer.model.Requests;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -42,7 +41,8 @@ public class RequestFragment extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mFriendsRegDatabase;
     private DatabaseReference mUserDatabase;
-    TextView noReqReceived;
+    private IntentPresenter intentPresenter;
+    private TextView noReqReceived;
 
     private String mCurrentUserID;
 
@@ -57,6 +57,7 @@ public class RequestFragment extends Fragment {
         // Inflate the layout for this fragment
         mMainView = inflater.inflate(R.layout.fragment_request, container, false);
         mAuth = FirebaseAuth.getInstance();
+        intentPresenter = new IntentPresenter(getContext());
 
         mReceivedList = mMainView.findViewById(R.id.allrecived_recycler);
         noReqReceived = mMainView.findViewById(R.id.received_req_msg);
@@ -135,10 +136,7 @@ public class RequestFragment extends Fragment {
                                             holder.mView.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
-                                                    profileIntent.putExtra("user_id", list_user_id);
-                                                    profileIntent.putExtra("username", userName);// send user id to use it to get all other info in db
-                                                    startActivity(profileIntent);
+                                                    intentPresenter.presentIntent(ClassName.Profile, list_user_id, userName);
                                                 }
                                             });
                                         }

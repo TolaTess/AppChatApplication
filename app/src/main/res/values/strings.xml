@@ -16,7 +16,6 @@
     <string name="create_a_new_account">Create a new Account</string>
     <string name="change_image">Change Image</string>
     <string name="change_status">Change Status</string>
-    <string name="online">Online</string>
     <string name="message_prompt">Enter Message...</string>
     <string name="last_seen">Last Seen</string>
     <string name="no_request_msg">There are no Requests</string>
@@ -24,4 +23,12 @@
     <string name="accounts">Accounts</string>
     <string name="accept_req">Accept Friend Request</string>
     <string name="cancel_req">Cancel Friend Request</string>
+    <string name="received_req">received</string>
+    <string name="sent_req">sent</string>
+    <string name="friends_table">Friends</string>
+    <string name="setting_class">Setting</string>
+    <string name="remove_name">\"Remove \"</string>
+    <string name="online_tag">online</string>
+    <string name="no_friends_msg">You currently have no Friends</string>
+    <string name="talk_to_friends">Go on, talk to your friends!</string>
 </resources>

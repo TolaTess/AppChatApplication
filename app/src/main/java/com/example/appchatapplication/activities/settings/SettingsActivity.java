@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseAuthHelper;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -146,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String statusValue = mStatus.getText().toString();
-                intentPresenter.presentIntent("Status", statusValue, null);
+                intentPresenter.presentIntent(ClassName.Status, statusValue, null);
 
             }
         });

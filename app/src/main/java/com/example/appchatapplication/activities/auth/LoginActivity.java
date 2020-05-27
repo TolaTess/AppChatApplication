@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -46,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.login_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Login");
+        getSupportActionBar().setTitle(R.string.login);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.bringToFront();
 
@@ -84,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             mRegProgress.dismiss();
-                            intentPresenter.presentIntent("Home", null, null);
+                            intentPresenter.presentIntent(ClassName.Home, null, null);
 
                         } else {
                             // If sign in fails, display a message to the user.

@@ -130,7 +130,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 if(online.equals("true")){
 
-                    mLastSeen.setText(R.string.online);
+                    mLastSeen.setText(R.string.online_tag);
 
                 } else{
 

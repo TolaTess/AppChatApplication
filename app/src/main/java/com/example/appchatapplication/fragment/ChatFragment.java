@@ -1,6 +1,5 @@
 package com.example.appchatapplication.fragment;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,8 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.appchatapplication.activities.chat.ChatActivity;
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.example.appchatapplication.modellayer.model.Conv;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -42,6 +42,8 @@ public class ChatFragment extends Fragment {
     private DatabaseReference mConvDatabase;
     private DatabaseReference mUserDatabase;
     private DatabaseReference mMessageDatabse;
+    private IntentPresenter intentPresenter;
+
     FirebaseRecyclerAdapter<Conv, ChatsViewHolder> chatsAdapter;
 
     private String mCurrentUserID;
@@ -60,6 +62,7 @@ public class ChatFragment extends Fragment {
         mConvList = mMainView.findViewById(R.id.conv_list);
 
         mAuth = FirebaseAuth.getInstance();
+        intentPresenter = new IntentPresenter(getContext());
 
         mCurrentUserID = mAuth.getCurrentUser().getUid();
 
@@ -93,6 +96,7 @@ public class ChatFragment extends Fragment {
                         .setQuery(convQuery, Conv.class)
                         .build();
 
+
         chatsAdapter =
                 new FirebaseRecyclerAdapter<Conv, ChatsViewHolder>(
                         options) {
@@ -115,8 +119,11 @@ public class ChatFragment extends Fragment {
                         lastMessageQuery.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                String data = dataSnapshot.child("message").getValue().toString();
-                                holder.setMessage(data, model.isSeen());
+                                if(dataSnapshot.hasChild("message")) {
+                                    String data = dataSnapshot.child("message").getValue().toString();
+                                    holder.setMessage(data, model.isSeen());
+
+                                }
                             }
 
                             @Override
@@ -155,10 +162,7 @@ public class ChatFragment extends Fragment {
                                 holder.mView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                        chatIntent.putExtra("user_id", list_user_id);
-                                        chatIntent.putExtra("username", userName);// send user id to use it to get all other info in db
-                                        startActivity(chatIntent);
+                                        intentPresenter.presentIntent(ClassName.Chats, list_user_id, userName);
                                     }
                                 });
                             }
@@ -171,8 +175,10 @@ public class ChatFragment extends Fragment {
 
                     }
                 };
+
         chatsAdapter.startListening();
         mConvList.setAdapter(chatsAdapter);
+
     }
 
     @Override

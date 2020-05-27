@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.example.appchatapplication.modellayer.model.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -39,6 +40,7 @@ public class FriendsFragment extends Fragment {
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mUserDatabase;
     private IntentPresenter intentPresenter;
+    private TextView noFriendMessage;
     FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsAdapter;
 
     private String mCurrentUserID;
@@ -57,6 +59,7 @@ public class FriendsFragment extends Fragment {
         mFriendsList = mMainView.findViewById(R.id.allfriends_recycler);
 
         mAuth = FirebaseAuth.getInstance();
+        noFriendMessage = mMainView.findViewById(R.id.received_friend_msg);
 
         mCurrentUserID = mAuth.getCurrentUser().getUid();
 
@@ -108,7 +111,9 @@ public class FriendsFragment extends Fragment {
 
                                 final String userName = dataSnapshot.child("name").getValue().toString();
                                 String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
-
+                                if(dataSnapshot.hasChild("name")) {
+                                    noFriendMessage.setVisibility(View.INVISIBLE);
+                                }
                                 if(dataSnapshot.hasChild("online")){
 
                                     String userOnline = dataSnapshot.child("online").getValue().toString();
@@ -129,10 +134,10 @@ public class FriendsFragment extends Fragment {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 switch (which){
                                                     case 0:
-                                                       intentPresenter.presentIntent("Profile", list_user_id, userName);
+                                                       intentPresenter.presentIntent(ClassName.Profile, list_user_id, userName);
                                                         break;
                                                     case 1:
-                                                        intentPresenter.presentIntent("Chats", list_user_id, userName);
+                                                        intentPresenter.presentIntent(ClassName.Chats, list_user_id, userName);
                                                         break;
                                                     default:
                                                 }

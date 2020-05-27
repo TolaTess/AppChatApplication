@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.example.appchatapplication.modellayer.model.Users;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -85,7 +86,7 @@ public class AllUserPresenterImpl implements AllUserPresenter{
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        intentPresenter.presentIntent("Profile", userid, name);
+                        intentPresenter.presentIntent(ClassName.Profile, userid, name);
                     }
                 });
 

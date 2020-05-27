@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -53,14 +54,14 @@ public class StartActivity extends AppCompatActivity {
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intentPresenter.presentIntent("Register", null, null);
+                intentPresenter.presentIntent(ClassName.Register, null, null);
             }
         });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               intentPresenter.presentIntent("Login", null, null);
+               intentPresenter.presentIntent(ClassName.Login, null, null);
             }
         });
     }

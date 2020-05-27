@@ -15,6 +15,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
+import com.example.appchatapplication.modellayer.enums.ClassName;
+import com.example.appchatapplication.modellayer.enums.State;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -23,16 +25,17 @@ import com.squareup.picasso.Picasso;
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
 
-    private static final String MESSAGE_TYPE_SENT = "sent";
+    /*private static final String MESSAGE_TYPE_SENT = "sent";
     private static final String MESSAGE_TYPE_RECEIVED = "received";
     private static final String REQUEST_TYPE_SENT = "req_sent";
     private static final String REQUEST_TYPE_RECEIVED = "req_received";
     private static final String FRIEND = "friend";
-    private static final String NOT_FRIEND = "not_friends";
+   *//* private static final String NOT_FRIEND = "not_friends";*/
 
 
     private ImageView mProfileImage;
-    private TextView mDisplayName, mProfileStatus, mProfileFriendsCount;
+    private TextView mProfileStatus;
+    private TextView mProfileFriendsCount;
     private Button mRequestButton, mDeclineButton;
     private ProgressDialog progressDialog;
 
@@ -40,9 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Context mContext = ProfileActivity.this;
     private IntentPresenter intentPresenter;
 
-    private String mCurrent_state;
+    private State mCurrent_state;
     private String mName;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +54,13 @@ public class ProfileActivity extends AppCompatActivity {
         final String user_id = getIntent().getStringExtra("user_id");
         mName = getIntent().getStringExtra("username");
 
-        setupToolbar();
         databaseHelper = new FirebaseDatabaseHelper();
         intentPresenter = new IntentPresenter(mContext);
 
-        mDisplayName = findViewById(R.id.profile_name);
-        mProfileStatus = findViewById(R.id.profile_status);
-        mProfileFriendsCount = findViewById(R.id.profile_totalFriends);
-        mProfileImage = findViewById(R.id.profile_image);
-        mRequestButton = findViewById(R.id.profile_send_reg_btn);
-        mDeclineButton = findViewById(R.id.decline_req_btn);
+        setupToolbar();
+        attachUI();
 
-        mCurrent_state = NOT_FRIEND;
-
+        mCurrent_state = State.not_friend;
         mDeclineButton.setVisibility(View.INVISIBLE);
         mDeclineButton.setEnabled(false);
 
@@ -91,29 +87,25 @@ public class ProfileActivity extends AppCompatActivity {
                                 if (dataSnapshot.hasChild(user_id)) {
                                     String req_type = dataSnapshot.child(user_id).child("request_type")
                                             .getValue().toString();
-                                    if (req_type.equals(MESSAGE_TYPE_RECEIVED)) {
-                                        mCurrent_state = REQUEST_TYPE_RECEIVED;
+                                    if (req_type.equals(getString(R.string.received_req))) {
+                                        mCurrent_state = State.request_received;
                                         mRequestButton.setText(R.string.accept_req);
                                         mDeclineButton.setVisibility(View.VISIBLE);
                                         mDeclineButton.setEnabled(true);
 
-                                    } else if (req_type.equals(MESSAGE_TYPE_SENT)) {
-                                        mCurrent_state = REQUEST_TYPE_SENT;
+                                    } else if (req_type.equals(getString(R.string.sent_req))) {
+                                        mCurrent_state = State.request_sent;
                                         mRequestButton.setText(R.string.cancel_friend_req);
-                                        mDeclineButton.setVisibility(View.INVISIBLE);
-                                        mDeclineButton.setEnabled(false);
                                     }
                                     progressDialog.dismiss();
                                 } else {
-                                    databaseHelper.getmRootRef().child("Friends").child(databaseHelper.getMcurrent_user_id())
+                                    databaseHelper.getmRootRef().child(getString(R.string.friends_table)).child(databaseHelper.getMcurrent_user_id())
                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                     if (dataSnapshot.hasChild(user_id)) {
-                                                        mCurrent_state = FRIEND;
+                                                        mCurrent_state = State.friend;
                                                         mRequestButton.setText("Remove " + mName);
-                                                        mDeclineButton.setVisibility(View.INVISIBLE);
-                                                        mDeclineButton.setEnabled(false);
                                                         progressDialog.dismiss();
                                                     }
                                                 }
@@ -133,13 +125,13 @@ public class ProfileActivity extends AppCompatActivity {
                             }
                         });
 
-                databaseHelper.getmRootRef().child("Friends").child(user_id)
+                databaseHelper.getmRootRef().child(getString(R.string.friends_table)).child(user_id)
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 long friendsCount = dataSnapshot.getChildrenCount();
                                 String stringCount = String.valueOf(friendsCount);
-                                String friendsCountDisplay = "Total Friends: " + stringCount;
+                                String friendsCountDisplay = getString(R.string.total_friends) + stringCount;
                                 mProfileFriendsCount.setText(friendsCountDisplay);
                             }
 
@@ -161,43 +153,37 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mRequestButton.setEnabled(false);
-                
+
                 //friends request section
                 if (databaseHelper.getMcurrent_user_id().equals(user_id)) {
                     mRequestButton.setText(R.string.accounts); // bug
-                    intentPresenter.presentIntent("Setting", databaseHelper.getMcurrent_user_id(), null);
+                    intentPresenter.presentIntent(ClassName.Setting, databaseHelper.getMcurrent_user_id(), null);
                 } else {
 
                     switch (mCurrent_state) {
-                        case NOT_FRIEND:
+                        case not_friend:
                             //Request Friends
-                          databaseHelper.loadDatabase(mContext, user_id, NOT_FRIEND);
-                            mRequestButton.setEnabled(true);
-                            mCurrent_state = REQUEST_TYPE_SENT;
+                          databaseHelper.loadDatabase(mContext, user_id, State.not_friend);
+                            btnSettings();
+                            mCurrent_state = State.request_sent;
                             mRequestButton.setText(R.string.cancel_friend_req);
-                            mDeclineButton.setVisibility(View.INVISIBLE);
-                            mDeclineButton.setEnabled(false);
                             break;
-                        case FRIEND:
+                        case friend:
                             //remove Friend from Friend DB - UnFriend
-                            databaseHelper.loadDatabase(mContext, user_id, FRIEND);
-                            mRequestButton.setEnabled(true); //grey out button
-                            mCurrent_state = NOT_FRIEND;
+                            databaseHelper.loadDatabase(mContext, user_id, State.friend);
+                            btnSettings();
+                            mCurrent_state = State.not_friend;
                             mRequestButton.setText(R.string.send_friend_request);
-                            mDeclineButton.setVisibility(View.INVISIBLE);
-                            mDeclineButton.setEnabled(false);
                             break;
-                        case REQUEST_TYPE_RECEIVED:
+                        case request_received:
                             //Accept Friend, Delete Friend Req data and data to Friends DB
-                            databaseHelper.loadDatabase(mContext, user_id, REQUEST_TYPE_RECEIVED);
-                            mRequestButton.setEnabled(true); //grey out button
-                            mCurrent_state = FRIEND;
-                            String removefriendsDisplay = "Remove " + mName;
+                            databaseHelper.loadDatabase(mContext, user_id, State.request_received);
+                            btnSettings();
+                            mCurrent_state = State.friend;
+                            String removefriendsDisplay = getString(R.string.remove_name) + mName;
                             mRequestButton.setText(removefriendsDisplay);
-                            mDeclineButton.setVisibility(View.INVISIBLE);
-                            mDeclineButton.setEnabled(false);
                             break;
-                        case REQUEST_TYPE_SENT:
+                        case request_sent:
                             //Cancel Friend Request
                             cancelFriendRequest(user_id);
                     }
@@ -215,13 +201,26 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void cancelFriendRequest(String user_id) {
-        databaseHelper.loadDatabase(mContext, user_id, REQUEST_TYPE_SENT);
-        mRequestButton.setEnabled(true); //grey out button
-        mCurrent_state = NOT_FRIEND;
-        mRequestButton.setText(R.string.send_friend_request);
+    private void attachUI() {
+        TextView mDisplayName = findViewById(R.id.profile_name);
+        mProfileStatus = findViewById(R.id.profile_status);
+        mProfileFriendsCount = findViewById(R.id.profile_totalFriends);
+        mProfileImage = findViewById(R.id.profile_image);
+        mRequestButton = findViewById(R.id.profile_send_reg_btn);
+        mDeclineButton = findViewById(R.id.decline_req_btn);
+    }
+
+    private void btnSettings() {
+        mRequestButton.setEnabled(true);
         mDeclineButton.setVisibility(View.INVISIBLE);
         mDeclineButton.setEnabled(false);
+    }
+
+    private void cancelFriendRequest(String user_id) {
+        databaseHelper.loadDatabase(mContext, user_id, State.request_sent);
+        btnSettings();
+        mCurrent_state = State.not_friend;
+        mRequestButton.setText(R.string.send_friend_request);
     }
 
     private void setupToolbar() {

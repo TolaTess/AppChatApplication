@@ -14,6 +14,7 @@ import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.helpers.CustomPagerAdapter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ServerValue;
 
@@ -23,11 +24,6 @@ public class HomeActivity extends AppCompatActivity {
     private IntentPresenter intentPresenter;
 
     private Context mContext = HomeActivity.this;
-
-    private ViewPager mViewPager;
-    private CustomPagerAdapter customPagerAdapter;
-    private TabLayout tabLayout;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,17 +41,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private void attachUI() {
         //Tabs
-        mViewPager = findViewById(R.id.main_view_pager);
-        customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
+        ViewPager mViewPager = findViewById(R.id.main_view_pager);
+        CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(customPagerAdapter);
-        tabLayout = findViewById(R.id.main_tabs);
+        TabLayout tabLayout = findViewById(R.id.main_tabs);
         tabLayout.setupWithViewPager(mViewPager);
     }
 
     private void onlineCheck() {
         if(databaseHelper.getMcurrent_user_id() != null){
             databaseHelper.getmUserDatabase().child(databaseHelper.getMcurrent_user_id())
-            .child("online").setValue("true");
+            .child(getString(R.string.online_tag)).setValue("true");
         }
     }
 
@@ -70,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         //
         if (databaseHelper.getHelper().getMcurrent_user() == null) {
-            intentPresenter.presentIntent("Start", null, null);
+            intentPresenter.presentIntent(ClassName.Start, null, null);
         }
     }
 
@@ -89,14 +85,14 @@ public class HomeActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.main_logout_btn){
             databaseHelper.getHelper().getmAuth().signOut();
             databaseHelper.getmUserDatabase().child(databaseHelper.getMcurrent_user_id())
-                    .child("online").setValue(ServerValue.TIMESTAMP);
-            intentPresenter.presentIntent("Start", null, null);
+                    .child(getString(R.string.online_tag)).setValue(ServerValue.TIMESTAMP);
+            intentPresenter.presentIntent(ClassName.Start, null, null);
         }
         if(item.getItemId() == R.id.main_setting_btn){
-            intentPresenter.presentIntent("Setting", null, null);
+            intentPresenter.presentIntent(ClassName.Setting, null, null);
         }
         if(item.getItemId() == R.id.main_all_user_btn){
-            intentPresenter.presentIntent("AllUsers", null, null);
+            intentPresenter.presentIntent(ClassName.AllUsers, null, null);
         }
         return true;
     }

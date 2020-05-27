@@ -14,6 +14,7 @@ import com.example.appchatapplication.activities.profile.ProfileActivity;
 import com.example.appchatapplication.activities.settings.SettingsActivity;
 import com.example.appchatapplication.activities.start.StartActivity;
 import com.example.appchatapplication.activities.status.StatusActivity;
+import com.example.appchatapplication.modellayer.enums.ClassName;
 
 public class IntentPresenter {
     private static final String TAG = "IntentPresenter";
@@ -27,51 +28,51 @@ public class IntentPresenter {
 
     }
 
-    public void presentIntent(String activity, String userid, String extra) {
+    public void presentIntent(ClassName activity, String userid, String extra) {
         switch (activity) {
-            case "Home":
+            case Home:
                 Intent homeIntent = new Intent(mContext, HomeActivity.class);
                 homeIntent.putExtra("user_id", userid);// send user id to use it to get all other info in db
                 mContext.startActivity(homeIntent);
                 break;
-            case "Setting":
+            case Setting:
                 Intent settingIntent = new Intent(mContext, SettingsActivity.class);
                 settingIntent.putExtra("user_id", userid);// send user id to use it to get all other info in db
                 mContext.startActivity(settingIntent);
                 break;
-            case "AllUsers":
+            case AllUsers:
                 Intent allUserIntent = new Intent(mContext, AllUserActivity.class);
                 allUserIntent.putExtra("user_id", userid);
                 allUserIntent.putExtra("username", extra);// send user id to use it to get all other info in db
                 mContext.startActivity(allUserIntent);
                 break;
-            case "Status":
+            case Status:
                 Intent statusIntent = new Intent(mContext, StatusActivity.class);
                 statusIntent.putExtra("status_value", userid);
                 mContext.startActivity(statusIntent);
                 break;
-            case "Chats":
+            case Chats:
                 Intent chatIntent = new Intent(mContext, ChatActivity.class);
                 chatIntent.putExtra("user_id", userid);
                 chatIntent.putExtra("username", extra);// send user id to use it to get all other info in db
                 mContext.startActivity(chatIntent);
                 break;
-            case "Start":
+            case Start:
                 Intent startIntent = new Intent(mContext, StartActivity.class);
                 mContext.startActivity(startIntent);
                 mActivity.finish();
                 break;
-            case "Profile":
+            case Profile:
                 Intent profileIntent = new Intent(mContext, ProfileActivity.class);
                 profileIntent.putExtra("user_id", userid);
                 profileIntent.putExtra("username", extra);// send user id to use it to get all other info in db
                 mContext.startActivity(profileIntent);
                 break;
-            case "Register":
+            case Register:
                 Intent registerIntent = new Intent(mContext, RegisterActivity.class);
                 mContext.startActivity(registerIntent);
                 break;
-            case "Login":
+            case Login:
                 Intent loginIntent = new Intent(mContext, LoginActivity.class);
                 mContext.startActivity(loginIntent);
                 break;
