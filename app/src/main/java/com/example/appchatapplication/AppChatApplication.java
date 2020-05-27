@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
+import com.example.appchatapplication.modellayer.database.FirebaseAuthHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +19,7 @@ public class AppChatApplication extends Application {
 
     private DatabaseReference mUserDatabase;
     private FirebaseAuth mAuth;
+    private FirebaseAuthHelper helper;
 
     @Override
     public void onCreate() {
