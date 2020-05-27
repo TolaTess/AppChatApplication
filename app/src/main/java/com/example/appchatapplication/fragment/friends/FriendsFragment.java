@@ -1,4 +1,4 @@
-package com.example.appchatapplication.fragment;
+package com.example.appchatapplication.fragment.friends;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,16 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.example.appchatapplication.modellayer.model.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -36,14 +32,13 @@ public class FriendsFragment extends Fragment {
 
     private View mMainView;
     private RecyclerView mFriendsList;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mFriendsDatabase;
-    private DatabaseReference mUserDatabase;
-    private IntentPresenter intentPresenter;
-    private TextView noFriendMessage;
-    FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsAdapter;
 
-    private String mCurrentUserID;
+    private FriendPresenter friendPresenter;
+    private TextView noFriendMessage;
+
+    private FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsAdapter;
+
+
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -55,18 +50,11 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: ");
         mMainView = inflater.inflate(R.layout.fragment_friends, container, false);
-
+        friendPresenter = new FriendPresenterImpl(getContext());
         mFriendsList = mMainView.findViewById(R.id.allfriends_recycler);
 
-        mAuth = FirebaseAuth.getInstance();
         noFriendMessage = mMainView.findViewById(R.id.received_friend_msg);
 
-        mCurrentUserID = mAuth.getCurrentUser().getUid();
-
-        intentPresenter = new IntentPresenter(getContext());
-
-
-        //mFriendsList.setHasFixedSize(true);
         mFriendsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return mMainView;
@@ -77,14 +65,9 @@ public class FriendsFragment extends Fragment {
         Log.d(TAG, "onStart: ");
         super.onStart();
 
-        mFriendsDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Friends").child(mCurrentUserID);
-        mUserDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Users");
-
         FirebaseRecyclerOptions<Friends> options =
                 new FirebaseRecyclerOptions.Builder<Friends>()
-                        .setQuery(mFriendsDatabase, Friends.class)
+                        .setQuery(friendPresenter.getmFriendsDatabase(), Friends.class)
                         .build();
 
         friendsAdapter =
@@ -104,7 +87,7 @@ public class FriendsFragment extends Fragment {
                         holder.setDate(model.getDate_time());
 
                         final String list_user_id = getRef(position).getKey();
-                        mUserDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                        friendPresenter.getmUserDatabase().child(list_user_id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Log.d(TAG, "onDataChange: ");
@@ -134,10 +117,10 @@ public class FriendsFragment extends Fragment {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 switch (which){
                                                     case 0:
-                                                       intentPresenter.presentIntent(ClassName.Profile, list_user_id, userName);
+                                                       friendPresenter.getIntentFriendPresenter().presentIntent(ClassName.Profile, list_user_id, userName);
                                                         break;
                                                     case 1:
-                                                        intentPresenter.presentIntent(ClassName.Chats, list_user_id, userName);
+                                                        friendPresenter.getIntentFriendPresenter().presentIntent(ClassName.Chats, list_user_id, userName);
                                                         break;
                                                     default:
                                                 }

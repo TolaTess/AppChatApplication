@@ -1,4 +1,4 @@
-package com.example.appchatapplication.fragment;
+package com.example.appchatapplication.fragment.chats;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,17 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.example.appchatapplication.modellayer.model.Conv;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -38,15 +34,10 @@ public class ChatFragment extends Fragment {
 
     private View mMainView;
     private RecyclerView mConvList;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mConvDatabase;
-    private DatabaseReference mUserDatabase;
-    private DatabaseReference mMessageDatabse;
-    private IntentPresenter intentPresenter;
+    private ChatPresenter chatPresenter;
 
     FirebaseRecyclerAdapter<Conv, ChatsViewHolder> chatsAdapter;
 
-    private String mCurrentUserID;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -59,21 +50,9 @@ public class ChatFragment extends Fragment {
         Log.d(TAG, "onCreateView: ");
         mMainView = inflater.inflate(R.layout.fragment_chat, container, false);
 
+        chatPresenter = new ChatPresenterImpl(getContext());
+
         mConvList = mMainView.findViewById(R.id.conv_list);
-
-        mAuth = FirebaseAuth.getInstance();
-        intentPresenter = new IntentPresenter(getContext());
-
-        mCurrentUserID = mAuth.getCurrentUser().getUid();
-
-        mConvDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Chat").child(mCurrentUserID);
-        mConvDatabase.keepSynced(true);
-        mUserDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Users");
-        mMessageDatabse = FirebaseDatabase.getInstance().getReference()
-                .child("Messages").child(mCurrentUserID);
-        mMessageDatabse.keepSynced(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
@@ -89,7 +68,7 @@ public class ChatFragment extends Fragment {
         Log.d(TAG, "onStart: ");
         super.onStart();
 
-        Query convQuery = mConvDatabase.orderByChild("timestamp");
+        Query convQuery = chatPresenter.getmConvDatabase().orderByChild("timestamp");
 
         FirebaseRecyclerOptions<Conv> options =
                 new FirebaseRecyclerOptions.Builder<Conv>()
@@ -114,7 +93,7 @@ public class ChatFragment extends Fragment {
                         //holder.setDate(model.getDate_time());
 
                         final String list_user_id = getRef(position).getKey();
-                        Query lastMessageQuery = mMessageDatabse.child(list_user_id).limitToLast(1);
+                        Query lastMessageQuery = chatPresenter.getmMessageDatabase().child(list_user_id).limitToLast(1);
 
                         lastMessageQuery.addChildEventListener(new ChildEventListener() {
                             @Override
@@ -146,7 +125,7 @@ public class ChatFragment extends Fragment {
 
                             }
                         });
-                        mUserDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                        chatPresenter.getmUserChatDatabase().child(list_user_id).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 final String userName = dataSnapshot.child("name").getValue().toString();
@@ -162,7 +141,8 @@ public class ChatFragment extends Fragment {
                                 holder.mView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        intentPresenter.presentIntent(ClassName.Chats, list_user_id, userName);
+                                        chatPresenter.getIntentFriendPresenter()
+                                                .presentIntent(ClassName.Chats, list_user_id, userName);
                                     }
                                 });
                             }

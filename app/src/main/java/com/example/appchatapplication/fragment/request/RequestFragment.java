@@ -1,4 +1,4 @@
-package com.example.appchatapplication.fragment;
+package com.example.appchatapplication.fragment.request;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,16 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.example.appchatapplication.modellayer.model.Requests;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
@@ -37,14 +33,8 @@ public class RequestFragment extends Fragment {
 
     private View mMainView;
     private RecyclerView mReceivedList;
-    private RecyclerView mSentList;
-    private FirebaseAuth mAuth;
-    private DatabaseReference mFriendsRegDatabase;
-    private DatabaseReference mUserDatabase;
-    private IntentPresenter intentPresenter;
+    private RequestPresenter requestPresenter;
     private TextView noReqReceived;
-
-    private String mCurrentUserID;
 
     public RequestFragment() {
         // Required empty public constructor
@@ -56,20 +46,10 @@ public class RequestFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mMainView = inflater.inflate(R.layout.fragment_request, container, false);
-        mAuth = FirebaseAuth.getInstance();
-        intentPresenter = new IntentPresenter(getContext());
+        requestPresenter = new RequestPresenterImpl(getContext());
 
         mReceivedList = mMainView.findViewById(R.id.allrecived_recycler);
         noReqReceived = mMainView.findViewById(R.id.received_req_msg);
-
-        mCurrentUserID = mAuth.getCurrentUser().getUid();
-
-        mFriendsRegDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Friend_Req").child(mCurrentUserID);
-        mFriendsRegDatabase.keepSynced(true);
-        mUserDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("Users");
-        mUserDatabase.keepSynced(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
@@ -90,7 +70,7 @@ public class RequestFragment extends Fragment {
 
     private void receivedAdapterSetup() {
 
-        Query friendsQuery = mFriendsRegDatabase.orderByChild("request_type");
+        Query friendsQuery = requestPresenter.getmFriendsReqDatabase().orderByChild("request_type");
 
         FirebaseRecyclerOptions<Requests> options =
                 new FirebaseRecyclerOptions.Builder<Requests>()
@@ -113,13 +93,13 @@ public class RequestFragment extends Fragment {
                         Log.d(TAG, "onBindViewHolder: ");
 
                         final String list_user_id = getRef(position).getKey();
-                        mFriendsRegDatabase.child(list_user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                        requestPresenter.getmFriendsReqDatabase().child(list_user_id).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 final String type = dataSnapshot.child("request_type").getValue().toString();
                                 if(dataSnapshot.hasChild("request_type")){
                                     noReqReceived.setVisibility(View.INVISIBLE);
-                                    mUserDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                                    requestPresenter.getmUserReqDatabase().child(list_user_id).addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             final String userName = dataSnapshot.child("name").getValue().toString();
@@ -136,7 +116,8 @@ public class RequestFragment extends Fragment {
                                             holder.mView.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    intentPresenter.presentIntent(ClassName.Profile, list_user_id, userName);
+                                                    requestPresenter.getIntentReqPresenter()
+                                                            .presentIntent(ClassName.Profile, list_user_id, userName);
                                                 }
                                             });
                                         }

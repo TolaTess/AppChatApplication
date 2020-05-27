@@ -17,15 +17,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirebaseDatabaseHelper {
+public class FirebaseDatabaseHelper implements DatabasePresenter {
     private static final String TAG = "FirebaseDatabasePresent";
 
-    private DatabaseReference mFriendReqDatabase;
-    private DatabaseReference mFriendsDatabase;
-    private DatabaseReference mNotification;
     private DatabaseReference mRootRef;
     private DatabaseReference mUserDatabase;
-    private String userid;
 
     private FirebaseAuthHelper helper;
 
@@ -34,23 +30,12 @@ public class FirebaseDatabaseHelper {
     public FirebaseDatabaseHelper() {
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-        mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_Req");
-        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
-        mNotification = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
         helper = new FirebaseAuthHelper();
         helper.setupFirebase();
         if (helper.getmAuth().getCurrentUser() != null) {
             mcurrent_user_id = helper.getmAuth().getCurrentUser().getUid();
         }
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
     }
 
     public FirebaseAuthHelper getHelper() {
@@ -88,7 +73,7 @@ public class FirebaseDatabaseHelper {
             case not_friend:
                 Log.d(TAG, "setupDatabaseMap: Not friends");
                 //req friend
-                DatabaseReference newNotifRef = mNotification.child(muser_id).push();
+                DatabaseReference newNotifRef = mRootRef.child("Notifications").child(muser_id).push();
                 String newNotifId = newNotifRef.getKey();
 
                 HashMap<String, String> notifs = new HashMap<>();
