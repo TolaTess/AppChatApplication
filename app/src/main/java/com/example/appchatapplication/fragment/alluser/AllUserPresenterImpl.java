@@ -1,4 +1,4 @@
-package com.example.appchatapplication.activities.allusers;
+package com.example.appchatapplication.fragment.alluser;
 
 import android.content.Context;
 import android.util.Log;

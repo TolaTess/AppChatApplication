@@ -1,4 +1,4 @@
-package com.example.appchatapplication.activities.allusers;
+package com.example.appchatapplication.fragment.alluser;
 
 import android.view.View;
 import android.widget.ImageView;

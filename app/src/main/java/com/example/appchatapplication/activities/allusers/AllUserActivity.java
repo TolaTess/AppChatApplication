@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.fragment.alluser.AllUserPresenter;
+import com.example.appchatapplication.fragment.alluser.AllUserPresenterImpl;
 
 public class AllUserActivity extends AppCompatActivity {
     private static final String TAG = "AllUserActivity";
@@ -52,5 +54,6 @@ public class AllUserActivity extends AppCompatActivity {
         super.onStop();
         allUserPresenter.getAdapter().stopListening();
     }
+
 
 }
