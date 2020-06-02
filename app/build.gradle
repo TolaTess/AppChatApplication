@@ -51,6 +51,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:6.0.2'
     implementation 'com.google.firebase:firebase-messaging:20.1.7'
 
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.4'
+    implementation "com.android.support:design:28.0.0"
+
     //circler image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
@@ -63,6 +66,5 @@ dependencies {
 
     //image compressor
     implementation 'id.zelory:compressor:2.1.0'
-
 
 }

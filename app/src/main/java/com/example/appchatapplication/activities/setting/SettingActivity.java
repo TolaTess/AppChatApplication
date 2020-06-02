@@ -1,4 +1,4 @@
-package com.example.appchatapplication.activities.status;
+package com.example.appchatapplication.activities.setting;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class StatusActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity {
     private static final String TAG = "StatusActivity";
 
     private Toolbar toolbar;
@@ -61,7 +61,7 @@ public class StatusActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: ");
-                mRegProgress = new ProgressDialog(StatusActivity.this);
+                mRegProgress = new ProgressDialog(SettingActivity.this);
                 mRegProgress.setTitle("Saving changes");
                 mRegProgress.setMessage("Please wait while we save the changes");
                 mRegProgress.setCanceledOnTouchOutside(false);
@@ -78,7 +78,7 @@ public class StatusActivity extends AppCompatActivity {
                         } else {
                             Log.d(TAG, "onComplete: is not sucessfull");
                             mRegProgress.hide();
-                            Toast.makeText(StatusActivity.this, "Error saving changes", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SettingActivity.this, "Error saving changes", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

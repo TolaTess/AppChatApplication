@@ -23,13 +23,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.status.StatusActivity"
-            android:parentActivityName=".activities.settings.SettingsActivity" />
+            android:name=".activities.setting.SettingActivity"
+            android:parentActivityName=".activities.account.AccountActivity" />
         <activity
-            android:name=".activities.settings.SettingsActivity"
+            android:name=".activities.account.AccountActivity"
             android:parentActivityName=".activities.home.HomeActivity" />
         <activity android:name=".activities.auth.LoginActivity" />
         <activity android:name=".activities.auth.RegisterActivity" />
+        <activity android:name=".activities.IdeaActivity" />
         <activity android:name=".activities.start.StartActivity" />
         <activity android:name=".activities.profile.ProfileActivity"
             android:parentActivityName=".activities.home.HomeActivity"/>
