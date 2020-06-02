@@ -49,7 +49,6 @@ public class RegisterActivity extends AppCompatActivity {
         mRegProgress = new ProgressDialog(this);
 
         helper = new FirebaseAuthHelper();
-        helper.setupFirebase();
         databaseHelper = new FirebaseDatabaseHelper();
         intentPresenter = new IntentPresenter(mContext);
 

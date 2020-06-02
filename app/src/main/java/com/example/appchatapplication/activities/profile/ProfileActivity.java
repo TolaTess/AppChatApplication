@@ -159,7 +159,7 @@ public class ProfileActivity extends AppCompatActivity {
                 //friends request section
                 if (databaseHelper.getMcurrent_user_id().equals(user_id)) {
                     mRequestButton.setText(R.string.accounts); // bug
-                    intentPresenter.presentIntent(ClassName.Setting, databaseHelper.getMcurrent_user_id(), null);
+                    intentPresenter.presentIntent(ClassName.Account, databaseHelper.getMcurrent_user_id(), null);
                 } else {
 
                     switch (mCurrent_state) {

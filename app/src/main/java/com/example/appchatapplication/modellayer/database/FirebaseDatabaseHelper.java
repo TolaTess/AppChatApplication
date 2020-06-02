@@ -32,7 +32,6 @@ public class FirebaseDatabaseHelper implements DatabasePresenter {
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
         helper = new FirebaseAuthHelper();
-        helper.setupFirebase();
         if (helper.getmAuth().getCurrentUser() != null) {
             mcurrent_user_id = helper.getmAuth().getCurrentUser().getUid();
         }

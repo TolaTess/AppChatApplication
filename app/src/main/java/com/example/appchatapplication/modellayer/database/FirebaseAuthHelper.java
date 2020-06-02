@@ -10,6 +10,7 @@ public class FirebaseAuthHelper {
 
     public FirebaseAuthHelper() {
         mAuth = FirebaseAuth.getInstance();
+        mcurrent_user = mAuth.getCurrentUser();
     }
 
     public FirebaseAuth getmAuth() {
@@ -18,11 +19,6 @@ public class FirebaseAuthHelper {
 
     public FirebaseUser getMcurrent_user() {
         return mcurrent_user;
-    }
-
-    public void setupFirebase(){
-        mAuth = FirebaseAuth.getInstance();
-        mcurrent_user = mAuth.getCurrentUser();
     }
 
 }
