@@ -14,6 +14,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/main_tabs"
+            android:background="@color/colorAccent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             
@@ -28,5 +29,8 @@
         android:layout_marginTop="104dp">
 
     </androidx.viewpager.widget.ViewPager>
+
+    <!-- bottom navigation -->
+    <include layout="@layout/layout_bottom_nav"/>
 
 </RelativeLayout>

@@ -11,9 +11,9 @@ import com.example.appchatapplication.activities.auth.RegisterActivity;
 import com.example.appchatapplication.activities.chat.ChatActivity;
 import com.example.appchatapplication.activities.home.HomeActivity;
 import com.example.appchatapplication.activities.profile.ProfileActivity;
-import com.example.appchatapplication.activities.settings.SettingsActivity;
+import com.example.appchatapplication.activities.account.AccountActivity;
 import com.example.appchatapplication.activities.start.StartActivity;
-import com.example.appchatapplication.activities.status.StatusActivity;
+import com.example.appchatapplication.activities.setting.SettingActivity;
 import com.example.appchatapplication.modellayer.enums.ClassName;
 
 public class IntentPresenter {
@@ -36,7 +36,7 @@ public class IntentPresenter {
                 mContext.startActivity(homeIntent);
                 break;
             case Setting:
-                Intent settingIntent = new Intent(mContext, SettingsActivity.class);
+                Intent settingIntent = new Intent(mContext, AccountActivity.class);
                 settingIntent.putExtra("user_id", userid);// send user id to use it to get all other info in db
                 mContext.startActivity(settingIntent);
                 break;
@@ -47,7 +47,7 @@ public class IntentPresenter {
                 mContext.startActivity(allUserIntent);
                 break;
             case Status:
-                Intent statusIntent = new Intent(mContext, StatusActivity.class);
+                Intent statusIntent = new Intent(mContext, SettingActivity.class);
                 statusIntent.putExtra("status_value", userid);
                 mContext.startActivity(statusIntent);
                 break;

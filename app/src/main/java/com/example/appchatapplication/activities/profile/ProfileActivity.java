@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,18 +21,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
 
-    /*private static final String MESSAGE_TYPE_SENT = "sent";
-    private static final String MESSAGE_TYPE_RECEIVED = "received";
-    private static final String REQUEST_TYPE_SENT = "req_sent";
-    private static final String REQUEST_TYPE_RECEIVED = "req_received";
-    private static final String FRIEND = "friend";
-   *//* private static final String NOT_FRIEND = "not_friends";*/
-
-
-    private ImageView mProfileImage;
+    private CircleImageView mProfileImage;
     private TextView mProfileStatus;
     private TextView mProfileFriendsCount;
     private Button mRequestButton, mDeclineButton;
@@ -51,15 +44,24 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        final String user_id = getIntent().getStringExtra("user_id");
+
         mName = getIntent().getStringExtra("username");
 
         databaseHelper = new FirebaseDatabaseHelper();
         intentPresenter = new IntentPresenter(mContext);
 
+        String user_id_from_all_user = getIntent().getStringExtra("user_id");
+        final String user_id = getUser_id(user_id_from_all_user);
+
         setupToolbar();
         attachUI();
 
+        fetch(user_id);
+    }
+
+
+
+    private void fetch(final String user_id) {
         mCurrent_state = State.not_friend;
         mDeclineButton.setVisibility(View.INVISIBLE);
         mDeclineButton.setEnabled(false);
@@ -131,7 +133,7 @@ public class ProfileActivity extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 long friendsCount = dataSnapshot.getChildrenCount();
                                 String stringCount = String.valueOf(friendsCount);
-                                String friendsCountDisplay = getString(R.string.total_friends) + getString(R.string.space) + stringCount;
+                                String friendsCountDisplay = getString(R.string.total_friends) + " " + stringCount;
                                 mProfileFriendsCount.setText(friendsCountDisplay);
                             }
 
@@ -201,6 +203,13 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    private String getUser_id(String user_id_from_all_user) {
+        if(user_id_from_all_user != null)
+        return user_id_from_all_user;
+        else
+        return databaseHelper.getMcurrent_user_id();
+    }
+
     private void attachUI() {
         TextView mDisplayName = findViewById(R.id.profile_name);
         mProfileStatus = findViewById(R.id.profile_status);
@@ -229,5 +238,6 @@ public class ProfileActivity extends AppCompatActivity {
         this.getSupportActionBar().setTitle(mName);
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 }
 

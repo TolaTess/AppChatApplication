@@ -2,6 +2,7 @@ package com.example.appchatapplication.fragment.friends;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -164,11 +165,13 @@ public class FriendsFragment extends Fragment {
 
         public void setDate(String date) {
             TextView datestring = mView.findViewById(R.id.users_status);
+            datestring.setTextColor(Color.BLACK);
             datestring.setText(date);
         }
 
         public void setName(String name) {
             TextView userName = mView.findViewById(R.id.users_name);
+            userName.setTextColor(Color.BLACK);
             userName.setText(name);
         }
 

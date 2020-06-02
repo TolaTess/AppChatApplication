@@ -12,13 +12,17 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
+import com.example.appchatapplication.helpers.BottomNavPresenter;
 import com.example.appchatapplication.helpers.CustomPagerAdapter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ServerValue;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class HomeActivity extends AppCompatActivity {
+    private static final String TAG = "HomeActivity";
+    private static final int ACTIVITY_NUM = 0;
 
     private FirebaseDatabaseHelper databaseHelper;
     private IntentPresenter intentPresenter;
@@ -36,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         setupToolbar();
         onlineCheck();
         attachUI();
+       setupBottomNav();
 
     }
 
@@ -46,6 +51,12 @@ public class HomeActivity extends AppCompatActivity {
         mViewPager.setAdapter(customPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.main_tabs);
         tabLayout.setupWithViewPager(mViewPager);
+    }
+
+    private void setupBottomNav() {
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
+        BottomNavPresenter bottomNavPresenter = new BottomNavPresenter(mContext, ACTIVITY_NUM);
+        bottomNavPresenter.setupBottomNavigationView(bottomNavigationViewEx);
     }
 
     private void onlineCheck() {
@@ -88,14 +99,7 @@ public class HomeActivity extends AppCompatActivity {
                     .child(getString(R.string.online_tag)).setValue(ServerValue.TIMESTAMP);
             intentPresenter.presentIntent(ClassName.Start, null, null);
         }
-        if(item.getItemId() == R.id.main_setting_btn){
-            intentPresenter.presentIntent(ClassName.Setting, null, null);
-        }
-        if(item.getItemId() == R.id.main_all_user_btn){
-            intentPresenter.presentIntent(ClassName.AllUsers, null, null);
-        }
         return true;
     }
-
 
 }
