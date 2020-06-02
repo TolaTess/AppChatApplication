@@ -3,6 +3,7 @@ package com.example.appchatapplication.helpers;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -113,16 +114,24 @@ public class MessageAdapter extends RecyclerView.Adapter{
 
     public static class SentMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText;
+        ImageView messageImage;
 
         SentMessageHolder(View itemView) {
             super(itemView);
 
-            messageText = (TextView) itemView.findViewById(R.id.text_message_body);
-            timeText = (TextView) itemView.findViewById(R.id.text_message_time);
+            messageText =  itemView.findViewById(R.id.text_message_body);
+            timeText = itemView.findViewById(R.id.text_message_time);
+            messageImage = itemView.findViewById(R.id.sent_image_view);
         }
 
         public void setMessage(ReceivedMessage message) {
+            messageText.setVisibility(View.VISIBLE);
             messageText.setText(message.getMessage());
+            if(message.getType().equals("image")){
+                messageImage.setVisibility(View.VISIBLE);
+                messageText.setVisibility(View.GONE);
+                Picasso.get().load(message.getMessage()).placeholder(R.drawable.ic_launcher_foreground).into(messageImage);
+            }
         }
 
         public void setTime(String time) {
@@ -134,6 +143,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
     public static class ReceivedMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText, nameText;
         CircleImageView profileImage;
+        ImageView messageImage;
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
@@ -142,11 +152,19 @@ public class MessageAdapter extends RecyclerView.Adapter{
             timeText =  itemView.findViewById(R.id.text_message_time);
             nameText =  itemView.findViewById(R.id.text_message_name);
             profileImage = itemView.findViewById(R.id.image_message_profile);
+            messageImage = itemView.findViewById(R.id.rec_image_view);
 
         }
 
         public void bind(ReceivedMessage message) {
+            messageText.setVisibility(View.VISIBLE);
             messageText.setText(message.getMessage());
+            if(message.getType().equals("image")){
+                messageImage.setVisibility(View.VISIBLE);
+                messageText.setVisibility(View.GONE);
+                Picasso.get().load(message.getMessage())
+                        .placeholder(R.drawable.ic_launcher_foreground).into(messageImage);
+            }
         }
 
         public void setImage(String thumb_image) {

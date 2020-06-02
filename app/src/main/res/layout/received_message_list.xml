@@ -43,12 +43,26 @@
 
     <TextView
         android:id="@+id/text_message_time"
-        android:text="11:40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
+        android:text="11:40"
         android:textSize="10sp"
-        app:layout_constraintLeft_toRightOf="@+id/text_message_body"
-        android:layout_marginLeft="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_message_body" />
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/text_message_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/rec_image_view"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="13dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_message_body"
+        app:srcCompat="@drawable/luz_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
