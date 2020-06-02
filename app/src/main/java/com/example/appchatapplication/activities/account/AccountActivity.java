@@ -1,15 +1,10 @@
 package com.example.appchatapplication.activities.account;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,93 +15,58 @@ import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.helpers.BottomNavPresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseAuthHelper;
 import com.example.appchatapplication.modellayer.enums.ClassName;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import id.zelory.compressor.Compressor;
 
 public class AccountActivity extends AppCompatActivity {
 
-    private static final int GALLERY_PICK = 1;
     private static final int ACTIVITY_NUM = 2;
     private CircleImageView mDisplayImage;
     private TextView mName;
     private TextView mStatus;
-    private Toolbar toolbar;
 
-    private Button mStatusButton;
-    private Button mChangeImage;
     private IntentPresenter intentPresenter;
     private Context mContext = AccountActivity.this;
-
-    private FirebaseUser mCurrentUser;
-    private FirebaseAuthHelper helper;
-    private DatabaseReference myDatabaseRef;
-    private DatabaseReference mUserRef;
-    private StorageReference mStorageRef;
-    String currentUserId;
-
-    private ProgressDialog mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_acount);
 
-       helper = new FirebaseAuthHelper();
-       helper.setupFirebase();
+        FirebaseAuthHelper helper = new FirebaseAuthHelper();
+        intentPresenter = new IntentPresenter(mContext);
 
-        toolbar = findViewById(R.id.setting_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Account Settings");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupToolbar();
         setupBottomNav();
 
         mDisplayImage = findViewById(R.id.img_setting);
         mName = findViewById(R.id.text_display_name);
         mStatus = findViewById(R.id.text_status);
-        mStatusButton = findViewById(R.id.change_status);
-        mChangeImage = findViewById(R.id.change_image);
-        intentPresenter = new IntentPresenter(mContext);
+        Button mSettings = findViewById(R.id.setting_btn);
 
-        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        currentUserId = mCurrentUser.getUid();
+        fetch(helper, mSettings);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mUserRef = FirebaseDatabase.getInstance()
-                .getReference().child("Users")
-                .child(mAuth.getCurrentUser().getUid());
+    }
 
-        myDatabaseRef = FirebaseDatabase.getInstance()
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.setting_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Account Settings");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void fetch(FirebaseAuthHelper helper, Button mSettings) {
+        DatabaseReference myDatabaseRef = FirebaseDatabase.getInstance()
                 .getReference().child("Users").child(helper.getMcurrent_user().getUid());
-        //save data offline from firebase
-        //add name of app to Manifest (after theme)
-        //workes well for String not for image
-        //use Picasson offline for images
         myDatabaseRef.keepSynced(true);
 
         //Value Event Listener to get the data from database
@@ -146,27 +106,14 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-        mStatusButton.setOnClickListener(new View.OnClickListener() {
+        mSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String statusValue = mStatus.getText().toString();
-                intentPresenter.presentIntent(ClassName.Status, statusValue, null);
+                intentPresenter.presentIntent(ClassName.Setting, statusValue, null);
 
             }
         });
-
-        mChangeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //option 1
-                // this will direct user to the Gallery chooser (the library to choose images)
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "SELECT IMAGE"), GALLERY_PICK);
-            }
-        });
-
     }
 
     private void setupBottomNav() {
@@ -174,96 +121,4 @@ public class AccountActivity extends AppCompatActivity {
         BottomNavPresenter bottomNavPresenter = new BottomNavPresenter(mContext, ACTIVITY_NUM);
         bottomNavPresenter.setupBottomNavigationView(bottomNavigationViewEx);
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
-
-            Uri imageUri = data.getData();
-            CropImage.activity(imageUri)
-                    .setAspectRatio(1, 1)
-                    .start(this);
-
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                mProgressBar = new ProgressDialog(AccountActivity.this);
-                mProgressBar.setTitle("Uploading Image");
-                mProgressBar.setMessage("Please wait while we upload and process the image");
-                mProgressBar.setCanceledOnTouchOutside(false);
-                mProgressBar.show();
-
-                Uri resultUri = result.getUri();
-                File thumb_file = new File(resultUri.getPath());
-                String userUid = mCurrentUser.getUid();
-                Bitmap thumb_bitmap = null;
-                try {
-                    thumb_bitmap = new Compressor(this)
-                            .setMaxWidth(200).setMaxHeight(200)
-                            .setQuality(75).compressToBitmap(thumb_file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                thumb_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte [] thumb_byte = baos.toByteArray();
-
-
-                final StorageReference filepath = mStorageRef.child("profile_images").child(userUid + ".jpg");
-                StorageReference thumb_filepath = mStorageRef.child("profile_images").child("thumbs").child(userUid + ".jpg");
-
-                uploadImage(resultUri, filepath, thumb_filepath, thumb_byte);
-
-            } else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
-                Exception error = result.getError();
-            }
-        }
-    }
-
-    private void uploadImage(Uri resultUri, final StorageReference filepath, final StorageReference thumbpath, final byte[] thumb_byte) {
-        filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                //Toast.makeText(SettingsActivity.this, "Working", Toast.LENGTH_LONG).show();
-                filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        final String download_uri = uri.toString();
-                        UploadTask uploadTask = thumbpath.putBytes(thumb_byte);
-                        uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                thumbpath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        String thumb_download_uri = uri.toString();
-                                        //use Map instead of HashMap to update rather than delete existing data
-                                        Map update_hashMap = new HashMap();
-                                        update_hashMap.put("image", download_uri);
-                                        update_hashMap.put("thumb_image", thumb_download_uri);
-                                        //use updateChildren instead of setValue
-                                        myDatabaseRef.updateChildren(update_hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if(task.isSuccessful()){
-                                                    mProgressBar.dismiss();
-                                                } else {
-                                                    Toast.makeText(AccountActivity.this, "Error occured while uploading image", Toast.LENGTH_LONG).show();
-                                                    mProgressBar.dismiss();
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
-
 }

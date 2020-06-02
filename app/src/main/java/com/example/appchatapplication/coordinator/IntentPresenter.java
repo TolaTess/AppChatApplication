@@ -35,7 +35,7 @@ public class IntentPresenter {
                 homeIntent.putExtra("user_id", userid);// send user id to use it to get all other info in db
                 mContext.startActivity(homeIntent);
                 break;
-            case Setting:
+            case Account:
                 Intent settingIntent = new Intent(mContext, AccountActivity.class);
                 settingIntent.putExtra("user_id", userid);// send user id to use it to get all other info in db
                 mContext.startActivity(settingIntent);
@@ -46,7 +46,7 @@ public class IntentPresenter {
                 allUserIntent.putExtra("username", extra);// send user id to use it to get all other info in db
                 mContext.startActivity(allUserIntent);
                 break;
-            case Status:
+            case Setting:
                 Intent statusIntent = new Intent(mContext, SettingActivity.class);
                 statusIntent.putExtra("status_value", userid);
                 mContext.startActivity(statusIntent);

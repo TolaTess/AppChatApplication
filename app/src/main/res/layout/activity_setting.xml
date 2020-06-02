@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.profile.StatusActivity">
+    tools:context=".activities.setting.SettingActivity">
 
     <include
         android:id="@+id/status_toolbar"
@@ -16,13 +16,7 @@
         android:id="@+id/status_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="129dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="150dp"
         android:hint="@string/user_status">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -32,14 +26,29 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/change_image"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/status_btn"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="46dp"
+        android:background="@drawable/received_msg_background"
+        android:fontFamily="@font/aclonica"
+        android:text="@string/change_image"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
+
+    <Button
         android:id="@+id/status_btn"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="212dp"
-        android:layout_marginEnd="35dp"
+        android:layout_below="@+id/status_input"
+        android:layout_marginTop="50dp"
+        android:layout_centerInParent="true"
         android:background="@drawable/received_msg_background"
-        android:text="@string/change_status" />
+        android:fontFamily="@font/aclonica"
+        android:text="@string/save_status"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp" />
 
 </RelativeLayout>
