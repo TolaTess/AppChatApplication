@@ -2,12 +2,26 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
-
-    <!--<color name="colorPrimary">#6c7a89</color>
-    <color name="colorPrimaryDark">#6200EE</color>-->
-
     <color name="colorAccent">#FFFF</color>
     <color name="colourPurple">#9C27B0</color>
-    <color name="colourGrey">#FFEFE5E5</color>
+    <color name="colourGrey">#8C8C8C</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorTransparent">#00000000</color>
+
+    <!--<color name="colorPrimary">#F2F2F2</color>
+    <color name="colorBlack">#8C8C8C</color>
+    <color name="colourPurple">#404040</color>
+    <color name="colorPrimaryDark">#6200EE</color>
+    <color name="colorAccent">#0D0D0D</color>
+    <color name="colourGrey">#F2F2F2</color>-->
+
+   <!-- <color name="colorHeading">#FFF</color>
+    <color name="colorGreyMain">#8C8C8C</color>
+    <color name="colorbodyText">#000</color>
+    <color name="colourbackground">#F2F2F2</color>
+    <color name="colorMainColor">#6200EE</color>-->
+
+
+
+
 </resources>
