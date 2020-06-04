@@ -83,7 +83,7 @@ public class ChatFragment extends Fragment {
                     public ChatsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         Log.d(TAG, "onCreateViewHolder: ");
                         View view = LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.chat_list_view, parent, false);
+                                .inflate(R.layout.black_background_list_view, parent, false);
                         return new ChatsViewHolder(view);
                     }
 

@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_weight="3"
             android:orientation="vertical">
 
@@ -34,7 +35,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_weight="4"
                 android:text="@string/display_name"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorBlack"
                 android:textSize="18sp">
 
 
@@ -47,23 +48,14 @@
                 android:layout_below="@+id/custom_bar_name"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="3dp"
                 android:layout_weight="4"
                 android:text="@string/last_seen"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorBlack" />
 
             />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/time_sent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingTop="20dp"
-            android:text="00.00"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"></TextView>
 
 
     </LinearLayout>

@@ -52,7 +52,7 @@ public class AllUserPresenterImpl implements AllUserPresenter{
             public UsersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 Log.d(TAG, "onCreateViewHolder: ");
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.layout_list_view, parent, false);
+                        .inflate(R.layout.offwhite_background_view, parent, false);
                 return new UsersViewHolder(view);
             }
             @Override

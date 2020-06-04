@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".activities.setting.SettingActivity">
 
-    <include layout="@layout/app_bar_layout" android:id="@+id/setting_toolbar"/>
+    <include
+        android:id="@+id/setting_toolbar"
+        layout="@layout/app_bar_layout" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_setting"
@@ -28,7 +29,7 @@
         android:layout_marginTop="40dp"
         android:fontFamily="@font/aclonica"
         android:text="@string/display_name"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorBlack"
         android:textSize="24sp" />
 
     <TextView
@@ -40,7 +41,7 @@
         android:layout_marginTop="57dp"
         android:fontFamily="serif"
         android:text="@string/user_status"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorBlack"
         android:textSize="18sp" />
 
     <Button
@@ -50,13 +51,13 @@
         android:layout_below="@id/text_status"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:background="@drawable/sent_msg_background"
+        android:background="@drawable/button_default"
         android:fontFamily="@font/aclonica"
         android:text="@string/change_status"
         android:textColor="@color/colorBlack"
         android:textSize="15sp" />
 
-    <include layout="@layout/layout_bottom_nav"/>
+    <include layout="@layout/layout_bottom_nav" />
 
 
 </RelativeLayout>

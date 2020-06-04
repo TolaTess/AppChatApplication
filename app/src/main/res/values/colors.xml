@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#FFFF</color>
-    <color name="colourPurple">#9C27B0</color>
+    <!-- <color name="colorPrimary">#000</color>
+     <color name="colorPrimaryDark">#6200EE</color>
+     <color name="colorAccent">#FFFF</color>
+     <color name="colourPurple">#9C27B0</color>
+     <color name="colourGrey">#8C8C8C</color>
+     <color name="colorBlack">#000000</color>
+     <color name="colorTransparent">#00000000</color>-->
+
+    <color name="colorPrimary">#141414</color>
+    <color name="colorPrimaryDark">#141414</color>
+    <color name="colorYellow">#CFB14F</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="colourOffWhite">#EBEBEB</color>
     <color name="colourGrey">#8C8C8C</color>
     <color name="colorBlack">#000000</color>
     <color name="colorTransparent">#00000000</color>
@@ -15,13 +25,11 @@
     <color name="colorAccent">#0D0D0D</color>
     <color name="colourGrey">#F2F2F2</color>-->
 
-   <!-- <color name="colorHeading">#FFF</color>
-    <color name="colorGreyMain">#8C8C8C</color>
-    <color name="colorbodyText">#000</color>
-    <color name="colourbackground">#F2F2F2</color>
-    <color name="colorMainColor">#6200EE</color>-->
-
-
+    <!-- <color name="colorHeading">#FFF</color>
+     <color name="colorGreyMain">#8C8C8C</color>
+     <color name="colorbodyText">#000</color>
+     <color name="colourbackground">#F2F2F2</color>
+     <color name="colorMainColor">#6200EE</color>-->
 
 
 </resources>

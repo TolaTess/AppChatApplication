@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="-2dp"
         android:layout_marginTop="80dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/background_gradient"
         app:srcCompat="@drawable/luz_logo" />
 
     <TextView
@@ -51,10 +51,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="107dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/received_msg_background"
+        android:background="@drawable/button_default"
         android:fontFamily="@font/aclonica"
         android:text="@string/login"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorBlack" />
 
 
 </RelativeLayout>

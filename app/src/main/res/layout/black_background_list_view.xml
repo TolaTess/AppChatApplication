@@ -4,30 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:layout_margin="10dp"
+    android:background="@drawable/recycler_outline"
+    android:padding="15dp">
 
-
-    <ImageView
-        android:id="@+id/user_online_icon"
-        android:layout_width="25dp"
-        android:layout_height="30dp"
-        android:layout_below="@+id/users_image"
-        android:layout_marginStart="105dp"
-        android:layout_marginTop="-30dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/greendot" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/users_image"
+        android:id="@+id/chat_users_image"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_marginStart="20dp"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp" />
 
     <TextView
-        android:id="@+id/users_name"
+        android:id="@+id/chat_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -36,20 +26,32 @@
         android:fontFamily="@font/aclonica"
         android:maxWidth="180dp"
         android:text="@string/display_name"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorAccent"
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/users_status"
+        android:id="@+id/chat_conv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/users_name"
+        android:layout_below="@id/chat_username"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="5dp"
         android:fontFamily="@font/actor"
-        android:text="@string/user_status"
-        android:textColor="@color/colorBlack"
+        android:maxWidth="200dp"
+        android:text="No Recent Message"
+        android:textColor="@color/colorAccent"
         android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/chat_online_icon"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/chat_users_image"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="-30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible" />
 
 </RelativeLayout>

@@ -4,6 +4,6 @@
         android:radius="80dp" />
 
     <gradient
-        android:startColor="@color/colorAccent"
+        android:startColor="@color/colorYellow"
         android:endColor="@color/colorPrimary"/>
 </shape>

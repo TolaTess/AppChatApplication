@@ -6,14 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".activities.allusers.AllUserActivity">
 
-    <include android:id="@+id/users_toolbar" layout="@layout/app_bar_layout"/>
+    <include android:id="@+id/users_toolbar" layout="@layout/app_bar_transparent_layer"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/alluser_recycler"
         android:layout_below="@+id/users_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 

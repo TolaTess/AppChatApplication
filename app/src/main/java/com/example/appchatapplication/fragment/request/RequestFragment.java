@@ -84,7 +84,7 @@ public class RequestFragment extends Fragment {
                     public RequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                         Log.d(TAG, "onCreateViewHolder: ");
                         View view = LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.request_list_view, parent, false);
+                                .inflate(R.layout.offwhite_background_view, parent, false);
                         return new RequestsViewHolder(view);
                     }
 
@@ -153,11 +153,11 @@ public class RequestFragment extends Fragment {
         }
 
         public void setName(String name) {
-            TextView userName = mView.findViewById(R.id.req_users_name);
+            TextView userName = mView.findViewById(R.id.users_name);
             userName.setText(name);
     }
         public void setStatus(String request_type) {
-            TextView request = mView.findViewById(R.id.req_users_status);
+            TextView request = mView.findViewById(R.id.users_status);
             if (request_type.equals("received")){
                 request.setText(request_type);
             request.setTextColor(Color.GREEN);}
@@ -167,12 +167,12 @@ public class RequestFragment extends Fragment {
         }
 
         public void setImage(String thumb_image) {
-            CircleImageView mThumbImage = mView.findViewById(R.id.req_users_image);
+            CircleImageView mThumbImage = mView.findViewById(R.id.users_image);
             Picasso.get().load(thumb_image).placeholder(R.drawable.ic_launcher_foreground).into(mThumbImage);
         }
 
         public void setUserOnline(String online_status) {
-            ImageView userOnlineView = mView.findViewById(R.id.req_online_icon);
+            ImageView userOnlineView = mView.findViewById(R.id.user_online_icon);
 
             if (online_status.equals("true")) {
                 userOnlineView.setVisibility(View.VISIBLE);
