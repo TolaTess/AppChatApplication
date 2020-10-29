@@ -1,15 +1,17 @@
 package com.example.appchatapplication.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
@@ -33,6 +35,8 @@ public class TodoFragment extends Fragment {
     private final ArrayList<Long> date = new ArrayList<>();
     private final ArrayList<String> dateHeader = new ArrayList<>();
 
+    private TodoAdapter adapter;
+
     public TodoFragment() {
         // Required empty public constructor
     }
@@ -45,8 +49,10 @@ public class TodoFragment extends Fragment {
         getData();
         mainRecyclerView = view.findViewById(R.id.todo_view_pager);
 
-        TodoAdapter adapter = new TodoAdapter(type, activity, date, sortedType);
+        adapter = new TodoAdapter(type, activity, date, sortedType);
         mainRecyclerView.setAdapter(adapter);
+        new ItemTouchHelper(deleteCallback).attachToRecyclerView(mainRecyclerView);
+        new ItemTouchHelper(completedCallback).attachToRecyclerView(mainRecyclerView);
         mainRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         return view;
     }
@@ -68,7 +74,6 @@ public class TodoFragment extends Fragment {
                     activity.add(generateActivity.getActivity());
                     long dateLong = generateActivity.getDate();
                     date.add(dateLong);
-                    Log.i("******** key", deadline_key);
                     dateHeader.add(deadline_key);
                     for(String newDeadline : dateHeader){
                         if (sortedType.contains(newDeadline)){
@@ -77,8 +82,6 @@ public class TodoFragment extends Fragment {
                             sortedType.add(newDeadline);
                         }
                     }
-                    String l = sortedType.toString();
-                    Log.i("*****out", l);
                 }
             }
 
@@ -103,4 +106,38 @@ public class TodoFragment extends Fragment {
             }
         });
     }
+
+    ItemTouchHelper.SimpleCallback deleteCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            activity.remove(viewHolder.getAdapterPosition());
+            Toast toast = Toast.makeText(getContext(), "Removed", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
+            toast.show();
+            adapter.notifyDataSetChanged();
+            //remove from database
+        }
+    };
+
+    ItemTouchHelper.SimpleCallback completedCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            activity.remove(viewHolder.getAdapterPosition());
+            Toast toast = Toast.makeText(getContext(), "Well done! How about another?", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
+            toast.show();
+            adapter.notifyDataSetChanged();
+            //add to challenge completed database
+        }
+    };
 }
