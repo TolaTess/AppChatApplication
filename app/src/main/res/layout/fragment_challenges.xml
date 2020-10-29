@@ -10,14 +10,13 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/aclonica"
         android:text="How about a Challenge?"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name" />
 
@@ -25,13 +24,14 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/aclonica"
         android:text="choose a type to generate a challenge:"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/education_rel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_placeholder" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <RelativeLayout
         android:id="@+id/education_rel"
@@ -275,33 +275,20 @@
 
     <TextView
         android:id="@+id/user_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="307dp"
-        android:layout_marginBottom="17dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/bangers"
         android:text="Name"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:fontFamily="@font/aclonica"
-        android:padding="5dp"
-        android:text="generated placeholder"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

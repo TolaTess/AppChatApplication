@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.helpers.DialogFragmentHelper;
 import com.example.appchatapplication.modellayer.model.GenerateActivity;
 import com.google.gson.Gson;
 
@@ -24,8 +25,6 @@ import org.json.JSONObject;
 
 public class ChallengesFragment extends Fragment {
     private RequestQueue requestQueue;
-
-    private TextView placeholder;
     private TextView name;
 
     public ChallengesFragment() {
@@ -39,7 +38,6 @@ public class ChallengesFragment extends Fragment {
 
         requestQueue = Volley.newRequestQueue(getContext());
         name = view.findViewById(R.id.user_name);
-        placeholder = view.findViewById(R.id.text_placeholder);
         defineView(view);
         return view;
     }
@@ -53,15 +51,7 @@ public class ChallengesFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
-                        String result = response.toString();
-                        GenerateActivity activities = gson.fromJson(result, GenerateActivity.class);
-                        String type = activities.getType();
-                        String activity = activities.getActivity();
-
-                        String newString = type + " " + activity;
-                        //pop up display needed
-                        placeholder.setText(newString);
+                        setupGson(response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -72,6 +62,17 @@ public class ChallengesFragment extends Fragment {
                 }
         );
         requestQueue.add(objectRequest);
+    }
+
+    private void setupGson(JSONObject response) {
+        Gson gson = new Gson();
+        String result = response.toString();
+        GenerateActivity activities = gson.fromJson(result, GenerateActivity.class);
+        String type = activities.getType();
+        String activity = activities.getActivity();
+
+        DialogFragmentHelper fragmentHelper = new DialogFragmentHelper(type, activity);
+        fragmentHelper.show(getFragmentManager(), "DIALOG_FRAGMENT");
     }
 
     private void defineView(View view) {

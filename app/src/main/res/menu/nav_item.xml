@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+
     <item
         android:id="@+id/home"
         android:title="@string/home"
@@ -11,7 +12,6 @@
         android:id="@+id/main_app_idea"
         android:title="@string/app_name"
         android:icon="@drawable/circle_plus"/>
-
 
     <item
         android:id="@+id/profile"
