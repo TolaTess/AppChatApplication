@@ -6,8 +6,8 @@ public class GetUserInstance {
 
 
     public GetUserInstance() {
-        String artist = DataShareHolder.getInstance().getUsername();
-        username = getUserName(artist);
+        String user = DataShareHolder.getInstance().getUsername();
+        username = getUserName(user);
     }
 
     private String getUserName(String userInstance) {
@@ -15,7 +15,7 @@ public class GetUserInstance {
             return userInstance;
         else
             //update to use ultimate artist *******
-            return " ";
+            return "admin";
     }
 
     public String getUsername() {
