@@ -17,7 +17,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 public class IdeaActivity extends AppCompatActivity {
     private static final String TAG = "IdeaActivity";
 
-    private static final int ACTIVITY_NUM = 1;
+    private static final int ACTIVITY_NUM = 0;
     private Context mContext = IdeaActivity.this;
 
     @Override
@@ -46,7 +46,7 @@ public class IdeaActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        Toolbar mToolbar = findViewById(R.id.idea_page_toolbar);
+        Toolbar mToolbar = findViewById(R.id.idea_main_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Challenge Yourself");
     }

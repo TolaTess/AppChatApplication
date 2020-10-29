@@ -34,11 +34,11 @@ public class BottomNavViewHelper {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.home:
-                        Intent intent1 = new Intent(context, HomeActivity.class); //ACTIVITY_NUM = 0
+                        Intent intent1 = new Intent(context, IdeaActivity.class); //ACTIVITY_NUM = 0
                         context.startActivity(intent1);
                         break;
                     case R.id.main_app_idea:
-                        Intent intent2 = new Intent(context, IdeaActivity.class); //ACTIVITY_NUM = 1
+                        Intent intent2 = new Intent(context, HomeActivity.class); //ACTIVITY_NUM = 1
                         context.startActivity(intent2);
                         break;
                     case R.id.profile:
