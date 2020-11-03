@@ -6,47 +6,60 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.helpers.BottomNavPresenter;
-import com.example.appchatapplication.helpers.DataShareHolder;
+import com.example.appchatapplication.modellayer.database.DatabasePresenter;
+import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.example.appchatapplication.modellayer.enums.ClassName;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AccountActivity extends AppCompatActivity {
 
     private static final int ACTIVITY_NUM = 2;
-    private CircleImageView mDisplayImage;
-    private TextView mName;
-    private TextView mStatus;
+
+    @BindView(R.id.img_setting)
+    CircleImageView mDisplayImage;
+    @BindView(R.id.text_display_name)
+    TextView mName;
+    @BindView(R.id.text_status)
+    TextView mStatus;
+    @BindView(R.id.setting_btn)
+    Button mSettings;
+
+    private Unbinder unbinder;
 
     private IntentPresenter intentPresenter;
+    private DatabasePresenter presenter;
     private Context mContext = AccountActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acount);
+        unbinder = ButterKnife.bind(this);
 
+        presenter = new FirebaseDatabaseHelper();
         intentPresenter = new IntentPresenter(mContext);
 
         setupToolbar();
         setupBottomNav();
 
-        mDisplayImage = findViewById(R.id.img_setting);
-        mName = findViewById(R.id.text_display_name);
-        mStatus = findViewById(R.id.text_status);
-        Button mSettings = findViewById(R.id.setting_btn);
-
-        fetch(mSettings);
+        fetch();
 
     }
 
@@ -57,39 +70,43 @@ public class AccountActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void fetch(Button mSettings) {
+    private void fetch() {
+        DatabaseReference mUserDatabase;
+            mUserDatabase = presenter.getmUserDatabase().child(presenter.getMcurrent_user_id());
 
-        String name = DataShareHolder.getInstance().getUsername();
-        final String image =DataShareHolder.getInstance().getUserImage() ;
-        String status = DataShareHolder.getInstance().getStatus();
+        //Value Event Listener to get the data from database
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("name")) {
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String image = dataSnapshot.child("image").getValue().toString();
+                    String status = dataSnapshot.child("status").getValue().toString();
+                    String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
-        if (!image.equals("default")) {
-            //placeholder holds a picture on file before the getting database
-            Picasso.get().load(image).networkPolicy(NetworkPolicy.OFFLINE)
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .into(mDisplayImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
+                    //Ensures default image stays on screen
+                    if (!image.equals("default")) {
+                        //Ensure placeholder stays on screen until image downloads from database
+                        Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mDisplayImage);
+                    }
+                    mName.setText(name);
+                    mStatus.setText(status);
+                }
+            }
 
-                        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        @Override
-                        public void onError(Exception e) {
-                            //if offline image load fails load online
-                            Picasso.get().load(image).placeholder(R.drawable.ic_launcher_foreground).into(mDisplayImage);
-                        }
-                    });
-        }
-        mName.setText(name);
-        mStatus.setText(status);
-
+            }
+        });
 
         mSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //persist data
                 String statusValue = mStatus.getText().toString();
-                intentPresenter.presentIntent(ClassName.Setting, statusValue, null);
-
+                String dNameValue = mName.getText().toString();
+                intentPresenter.presentIntent(ClassName.Account, statusValue, dNameValue);
             }
         });
     }
@@ -98,5 +115,11 @@ public class AccountActivity extends AppCompatActivity {
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
         BottomNavPresenter bottomNavPresenter = new BottomNavPresenter(mContext, ACTIVITY_NUM);
         bottomNavPresenter.setupBottomNavigationView(bottomNavigationViewEx);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

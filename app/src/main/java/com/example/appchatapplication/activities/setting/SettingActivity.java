@@ -33,15 +33,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import id.zelory.compressor.Compressor;
 
 public class SettingActivity extends AppCompatActivity {
     private static final String TAG = "StatusActivity";
     private static final int GALLERY_PICK = 1;
 
-    private TextInputLayout mStatus;
+    @BindView(R.id.status_input)
+    TextInputLayout mStatus;
+    @BindView(R.id.status_btn)
+    Button mSaveStatus;
+    @BindView(R.id.change_image)
+    Button mChangeImage;
+
     private ProgressDialog mRegProgress;
     private String userId;
+
+    private Unbinder unbinder;
 
     //Firebase
     private FirebaseDatabaseHelper helper;
@@ -54,6 +65,7 @@ public class SettingActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        unbinder = ButterKnife.bind(this);
 
         //Firebase
         helper = new FirebaseDatabaseHelper();
@@ -66,9 +78,6 @@ public class SettingActivity extends AppCompatActivity {
         //persist data
         String status_value = getIntent().getStringExtra("status_value");
 
-        mStatus = findViewById(R.id.status_input);
-        Button mSaveStatus = findViewById(R.id.status_btn);
-        Button mChangeImage = findViewById(R.id.change_image);
 
         mStatus.getEditText().setHint(status_value);
 
@@ -206,5 +215,11 @@ public class SettingActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }
