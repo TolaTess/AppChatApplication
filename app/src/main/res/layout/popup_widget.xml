@@ -24,31 +24,50 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/user_online_icon"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/users_image"
+                android:layout_marginStart="105dp"
+                android:layout_marginTop="-30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/greendot" />
+
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/activityType_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/port_woman" />
+                android:id="@+id/users_image"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp" />
 
             <TextView
-                android:id="@+id/type_pholder"
-                android:layout_width="match_parent"
+                android:id="@+id/users_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="Type"
-                android:textColor="@color/colorWhite" />
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/aclonica"
+                android:maxWidth="180dp"
+                android:text="@string/display_name"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/activity_pholder"
-                android:layout_width="match_parent"
+                android:id="@+id/users_status"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="Activity"
-                android:textColor="@color/colorWhite" />
+                android:layout_below="@id/users_name"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/actor"
+                android:text="@string/user_status"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

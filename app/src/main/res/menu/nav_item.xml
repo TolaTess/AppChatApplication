@@ -9,9 +9,14 @@
         android:icon="@drawable/house"/>
 
     <item
-        android:id="@+id/main_app_idea"
-        android:title="@string/app_name"
-        android:icon="@drawable/circle_plus"/>
+        android:id="@+id/todo"
+        android:title="@string/todo"
+        android:icon="@drawable/ic_format_list_bulleted_black_24dp"/>
+
+    <item
+        android:id="@+id/chat"
+        android:title="Chat"
+        android:icon="@drawable/ic_chat_bubble_outline_black_24dp"/>
 
     <item
         android:id="@+id/profile"

@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.IdeaActivity">
+    <include
+        android:id="@+id/idea_main_toolbar"
+        layout="@layout/app_bar_layout" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
+        android:layout_below="@id/idea_main_toolbar"
+        android:layout_marginTop="55dp"
         android:fontFamily="@font/aclonica"
-        android:text="How about a Challenge today?"
+        android:text="Tap the wheel for your challenge?"
+        android:textAlignment="center"
         android:textSize="24sp" />
 
     <ImageView
@@ -45,6 +53,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/aclonica"
         android:text="Activity"
+        android:textAlignment="center"
         android:textSize="14sp" />
 
     <Button
@@ -53,9 +62,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_wheel"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/aclonica"
         android:text="Accept" />
+
+    <include layout="@layout/layout_bottom_nav" />
 
 
 </RelativeLayout>
