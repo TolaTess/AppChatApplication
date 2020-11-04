@@ -17,11 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageAdapter extends RecyclerView.Adapter{
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
@@ -71,7 +68,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         mAuth = FirebaseAuth.getInstance();
-        String current_user_id = mAuth.getCurrentUser().getUid();
+        //String current_user_id = mAuth.getCurrentUser().getUid();
 
         ReceivedMessage messages =  mMessageList.get(position);
         switch (holder.getItemViewType()){
@@ -80,7 +77,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
                 ((ReceivedMessageHolder) holder).bind(messages);
-                getUserDetails(holder, messages);
+                //getUserDetails(holder, messages);
                 break;
         }
 
@@ -119,19 +116,21 @@ public class MessageAdapter extends RecyclerView.Adapter{
         SentMessageHolder(View itemView) {
             super(itemView);
 
-            messageText =  itemView.findViewById(R.id.text_message_body);
+            messageText =  itemView.findViewById(R.id.texts_message_body);
             timeText = itemView.findViewById(R.id.text_message_time);
             messageImage = itemView.findViewById(R.id.sent_image_view);
         }
 
         public void setMessage(ReceivedMessage message) {
-            messageText.setVisibility(View.VISIBLE);
-            messageText.setText(message.getMessage());
-            if(message.getType().equals("image")){
+            if(message.getType().equals("text")) {
+                messageText.setVisibility(View.VISIBLE);
+                messageText.setText(message.getMessage());
+            }
+            /*if(message.getType().equals("image")){
                 messageImage.setVisibility(View.VISIBLE);
                 messageText.setVisibility(View.GONE);
                 Picasso.get().load(message.getMessage()).placeholder(R.drawable.ic_launcher_foreground).into(messageImage);
-            }
+            }*/
         }
 
         public void setTime(String time) {
@@ -142,38 +141,37 @@ public class MessageAdapter extends RecyclerView.Adapter{
 
     public static class ReceivedMessageHolder extends RecyclerView.ViewHolder {
         TextView messageText, timeText, nameText;
-        CircleImageView profileImage;
         ImageView messageImage;
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
 
             messageText = itemView.findViewById(R.id.text_message_body);
-            timeText =  itemView.findViewById(R.id.text_message_time);
-            nameText =  itemView.findViewById(R.id.text_message_name);
-            profileImage = itemView.findViewById(R.id.image_message_profile);
+            timeText =  itemView.findViewById(R.id.textr_message_time);
             messageImage = itemView.findViewById(R.id.rec_image_view);
 
         }
 
         public void bind(ReceivedMessage message) {
-            messageText.setVisibility(View.VISIBLE);
-            messageText.setText(message.getMessage());
-            if(message.getType().equals("image")){
+            if(message.getType().equals("text")) {
+                messageText.setVisibility(View.VISIBLE);
+                messageText.setText(message.getMessage());
+            }
+            /*if(message.getType().equals("image")){
                 messageImage.setVisibility(View.VISIBLE);
                 messageText.setVisibility(View.GONE);
-                Picasso.get().load(message.getMessage())
-                        .placeholder(R.drawable.ic_launcher_foreground).into(messageImage);
-            }
+                //Picasso.get().load(message.getMessage())
+                        //.placeholder(R.drawable.ic_launcher_foreground).into(messageImage);
+            }*/
         }
 
         public void setImage(String thumb_image) {
-            Picasso.get().load(thumb_image)
-                    .placeholder(R.drawable.ic_launcher_foreground).into(profileImage);
+            //Picasso.get().load(thumb_image)
+                    //.placeholder(R.drawable.ic_launcher_foreground).into(profileImage);
         }
 
         public void setDisplayName(String name) {
-            nameText.setText(name);
+            //nameText.setText(name);
         }
 
     }

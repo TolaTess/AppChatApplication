@@ -2,7 +2,6 @@ package com.example.appchatapplication.activities;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -132,9 +131,9 @@ public class TodoActivity extends AppCompatActivity {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             activity.remove(viewHolder.getAdapterPosition());
-            Toast toast = Toast.makeText(TodoActivity.this, "Removed", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
-            toast.show();
+            Toast.makeText(TodoActivity.this, "Removed", Toast.LENGTH_SHORT).show();
+            //toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
+            //toast.show();
             adapter.notifyDataSetChanged();
             //remove from database
         }
@@ -149,9 +148,9 @@ public class TodoActivity extends AppCompatActivity {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             activity.remove(viewHolder.getAdapterPosition());
-            Toast toast = Toast.makeText(TodoActivity.this, "Well done! How about another?", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
-            toast.show();
+            Toast.makeText(TodoActivity.this, "Well done! How about another?", Toast.LENGTH_SHORT).show();
+            //toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
+            //toast.show();
             adapter.notifyDataSetChanged();
             //add to challenge completed database
         }
