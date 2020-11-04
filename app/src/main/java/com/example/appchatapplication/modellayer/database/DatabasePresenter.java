@@ -16,5 +16,6 @@ public interface DatabasePresenter {
     Map registerUser(String display_name);
     Map setupDatabaseMap(String muser_id, State mapType);
     void loadDatabase(final Context context, String muser_id, State mapType);
+    Map writeTodo(String type, String activity);
 
 }

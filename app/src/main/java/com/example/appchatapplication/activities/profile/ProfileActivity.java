@@ -211,7 +211,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void attachUI() {
-        TextView mDisplayName = findViewById(R.id.profile_name);
+        //TextView mDisplayName = findViewById(R.id.profile_name);
         mProfileStatus = findViewById(R.id.profile_status);
         mProfileFriendsCount = findViewById(R.id.profile_totalFriends);
         mProfileImage = findViewById(R.id.profile_image);

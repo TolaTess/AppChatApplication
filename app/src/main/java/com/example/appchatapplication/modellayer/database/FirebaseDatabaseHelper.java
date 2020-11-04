@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.appchatapplication.modellayer.enums.State;
+import com.example.appchatapplication.modellayer.model.GenerateActivity;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -117,6 +118,19 @@ public class FirebaseDatabaseHelper implements DatabasePresenter {
                 }
             }
         });
+    }
+
+    public Map writeTodo(String type, String activity) {
+        String key = mRootRef.child("Todo").push().getKey();
+        GenerateActivity todo = new GenerateActivity(type, activity);
+        Map<String, Object> postValues = todo.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/Users_Todo/" + mcurrent_user_id + "/" + type + "/" + key, postValues);
+        childUpdates.put("/Todo/" + "counter", 1);
+
+        return childUpdates;
+
     }
 
 }

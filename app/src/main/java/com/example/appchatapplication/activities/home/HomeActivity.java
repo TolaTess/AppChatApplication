@@ -22,7 +22,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
-    private static final int ACTIVITY_NUM = 1;
+    private static final int ACTIVITY_NUM = 2;
 
     private FirebaseDatabaseHelper databaseHelper;
     private IntentPresenter intentPresenter;
@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
     private void setupToolbar() {
         Toolbar mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("App Chat");
+        getSupportActionBar().setTitle("Challenge");
     }
 
     @Override

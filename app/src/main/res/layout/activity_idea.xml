@@ -8,15 +8,24 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
+        android:background="@drawable/top_panel_shape"
         android:layout_height="wrap_content">
-        <include
-            layout="@layout/app_bar_layout" android:id="@+id/idea_page_toolbar" />
+
+        <androidx.appcompat.widget.Toolbar
+        android:id="@+id/idea_main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorTransparent"
+        android:elevation="2dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/idea_tabs"
-            android:background="@color/colorAccent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/colorAccent"
+            app:tabSelectedTextColor="@color/colorPrimaryDark"
+            android:background="@color/colorTransparent">
 
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
