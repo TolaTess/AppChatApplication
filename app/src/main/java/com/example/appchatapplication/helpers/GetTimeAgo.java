@@ -1,7 +1,6 @@
 package com.example.appchatapplication.helpers;
 
 import android.app.Application;
-import android.content.Context;
 
 /*
  * Copyright 2012 Google Inc.
@@ -26,7 +25,7 @@ public class GetTimeAgo extends Application {
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
     private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
 
-    public static String getTimeAgo(long time, Context context){
+    public static String getTimeAgo(long time){
         if(time < 1000000000000L){
             time *= 1000;
         }

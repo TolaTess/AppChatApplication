@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.appchatapplication.activities.IdeaActivity;
 import com.example.appchatapplication.activities.allusers.AllUserActivity;
 import com.example.appchatapplication.activities.auth.LoginActivity;
 import com.example.appchatapplication.activities.auth.RegisterActivity;
@@ -75,6 +76,10 @@ public class IntentPresenter {
             case Login:
                 Intent loginIntent = new Intent(mContext, LoginActivity.class);
                 mContext.startActivity(loginIntent);
+                break;
+            case Ideas:
+                Intent ideasIntent = new Intent(mContext, IdeaActivity.class);
+                mContext.startActivity(ideasIntent);
                 break;
         }
     }
