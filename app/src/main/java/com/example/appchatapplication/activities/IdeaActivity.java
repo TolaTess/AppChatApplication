@@ -78,7 +78,7 @@ public class IdeaActivity extends BaseActivity {
         databaseHelper = new FirebaseDatabaseHelper();
 
         Toolbar mToolbar = findViewById(R.id.idea_main_toolbar);
-        setUpToolbar(mToolbar, R.string.challenge_ys);
+        setUpToolbar(mToolbar, "Challenge Yourself");
         setupBottomNav(this, ACTIVITY_NUM);
 
         wheel.setOnClickListener(new View.OnClickListener() {

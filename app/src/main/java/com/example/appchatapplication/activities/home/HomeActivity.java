@@ -42,7 +42,7 @@ public class HomeActivity extends BaseActivity {
         intentPresenter = new IntentPresenter(mContext);
 
         Toolbar toolbar = findViewById(R.id.main_page_toolbar);
-        setUpToolbar(toolbar, R.string.challenge);
+        setUpToolbar(toolbar, "Challenge");
         onlineCheck();
         ViewPager mViewPager = findViewById(R.id.main_view_pager);
         TabLayout tabLayout = findViewById(R.id.main_tabs);

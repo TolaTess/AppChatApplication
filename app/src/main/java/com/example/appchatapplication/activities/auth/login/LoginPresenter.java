@@ -42,12 +42,12 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V> imp
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            //mRegProgress.dismiss();
+                            getMvpView().hideLoading();
                             getMvpView().openMainActivity();
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            //mRegProgress.hide();
+                            getMvpView().hideLoading();
                             Toast.makeText(context, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }

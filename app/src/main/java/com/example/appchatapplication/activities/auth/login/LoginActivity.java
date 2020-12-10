@@ -1,6 +1,5 @@
 package com.example.appchatapplication.activities.auth.login;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,8 +24,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     private TextInputLayout mEmail;
     private TextInputLayout mPassword;
 
-    private ProgressDialog mRegProgress;
-
     public static Intent getStartIntent(Context context){
         Intent intent = new Intent(context, LoginActivity.class);
         return intent;
@@ -41,12 +38,10 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         loginPresenter = new LoginPresenter(databasePresenter);
         loginPresenter.onAttach(this);
 
-        mRegProgress = new ProgressDialog(this);
-
         Toolbar mToolbar = findViewById(R.id.login_toolbar);
 
 
-        setUpToolbar(mToolbar, R.id.login_toolbar);
+        setUpToolbar(mToolbar, "Login");
 
         mEmail = findViewById(R.id.login_email);
         mPassword = findViewById(R.id.login_password);
@@ -77,11 +72,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         //check if information entered
         if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
 
-            mRegProgress.setTitle("Logging In");
-            mRegProgress.setMessage("Please wait while we check your credentials.");
-            mRegProgress.setCanceledOnTouchOutside(false);
-            mRegProgress.show();
-
+            loginPresenter.getMvpView().showLoading();
             loginPresenter.startLogin(this, email, password);
         }
     }

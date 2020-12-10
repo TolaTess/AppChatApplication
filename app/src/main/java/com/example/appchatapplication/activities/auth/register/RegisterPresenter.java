@@ -51,14 +51,14 @@ public class RegisterPresenter<V extends RegisterMvpView> extends BasePresenter<
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
-                                //mRegProgress.dismiss();
+                                getMvpView().hideLoading();
                                 getMvpView().openMainActivity();
                             }
                         }
                     });
 
                 } else{
-                    //mRegProgress.hide();
+                   getMvpView().hideLoading();
                     Toast.makeText(context, "An error occurred, please try again", Toast.LENGTH_LONG).show();
                 }
             }

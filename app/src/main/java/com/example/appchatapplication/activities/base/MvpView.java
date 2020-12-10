@@ -25,9 +25,10 @@ import com.google.android.material.tabs.TabLayout;
 
 public interface MvpView {
 
-    void setUpToolbar(Toolbar toolbar, int message);
     void setUpToolbar(Toolbar toolbar, String message);
     void setupBottomNav(Context context, int ACTIVITY_NUM);
     void attachUI(ViewPager viewPager, TabLayout tabLayout);
+    void showLoading();
+    void hideLoading();
 
 }

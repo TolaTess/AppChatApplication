@@ -75,11 +75,7 @@ public class RegisterActivity extends BaseActivity implements RegisterMvpView {
         //check if information entered
         if (!TextUtils.isEmpty(display_name) || !TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
 
-            mRegProgress.setTitle("Registering User");
-            mRegProgress.setMessage("Please wait while we create your account");
-            mRegProgress.setCanceledOnTouchOutside(false);
-            mRegProgress.show();
-
+            showLoading();
             presenter.startRegister(RegisterActivity.this, display_name, email, password);
         }
     }
