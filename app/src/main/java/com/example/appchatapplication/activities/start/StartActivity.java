@@ -1,27 +1,30 @@
 package com.example.appchatapplication.activities.start;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.coordinator.IntentPresenter;
-import com.example.appchatapplication.modellayer.enums.ClassName;
+import com.example.appchatapplication.activities.auth.login.LoginActivity;
+import com.example.appchatapplication.activities.auth.RegisterActivity;
+import com.example.appchatapplication.modellayer.database.DatabasePresenter;
+import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends Activity implements StartMvpView {
 
-    private IntentPresenter intentPresenter;
-    private Context mContext = StartActivity.this;
-    private Animation topAnimation, bottomAnimation, alphaAnimation;
+    Button registerBtn, loginBtn;
+    StartPresenter mPresenter;
+
+    public static Intent getStartIntent(Context context){
+        Intent intent = new Intent(context, StartActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,40 +32,42 @@ public class StartActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_start);
 
-        intentPresenter = new IntentPresenter(mContext);
+        DatabasePresenter presenter = new FirebaseDatabaseHelper();
+        mPresenter = new StartPresenter(presenter);
+        mPresenter.onAttach(this);
 
-        attachUI();
+        registerBtn = findViewById(R.id.reg_button);
+        loginBtn = findViewById(R.id.login_btn);
 
-    }
-
-    private void attachUI() {
-        Button regBtn = findViewById(R.id.reg_button);
-        Button loginBtn = findViewById(R.id.login_btn);
-        TextView title = findViewById(R.id.text);
-        ImageView logo = findViewById(R.id.start_logo);
-
-        topAnimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
-        bottomAnimation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
-        alphaAnimation = AnimationUtils.loadAnimation(this, R.anim.alpha_animation);
-
-        title.setAnimation(topAnimation);
-        regBtn.setAnimation(bottomAnimation);
-        loginBtn.setAnimation(bottomAnimation);
-        logo.setAnimation(alphaAnimation);
-        logo.setVisibility(View.INVISIBLE);
-
-        regBtn.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intentPresenter.presentIntent(ClassName.Register, null, null);
+                mPresenter.register();
             }
         });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               intentPresenter.presentIntent(ClassName.Login, null, null);
+                mPresenter.login();
             }
         });
+
     }
-}
+
+    @Override
+    public void openRegisterActivity() {
+        Intent intent = RegisterActivity.getStartIntent(this);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void openLoginActivity() {
+        Intent intent = LoginActivity.getStartIntent(this);
+        startActivity(intent);
+        finish();
+    }
+
+
+ }
