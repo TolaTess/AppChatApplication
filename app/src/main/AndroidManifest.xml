@@ -17,24 +17,24 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.TodoActivity"></activity>
         <activity
-            android:name=".activities.IdeaActivity"
-            android:launchMode="singleTop">
+            android:name=".activities.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.IdeaActivity" />
         <activity
             android:name=".activities.setting.SettingActivity"
             android:parentActivityName=".activities.account.AccountActivity" />
         <activity
             android:name=".activities.account.AccountActivity"
             android:parentActivityName=".activities.IdeaActivity" />
-        <activity android:name=".activities.auth.LoginActivity" />
-        <activity android:name=".activities.auth.RegisterActivity" />
-        <activity android:name=".activities.home.HomeActivity" />
+        <activity android:name=".activities.auth.login.LoginActivity" />
         <activity android:name=".activities.start.StartActivity" />
+        <activity android:name=".activities.auth.register.RegisterActivity" />
+        <activity android:name=".activities.home.HomeActivity" />
         <activity
             android:name=".activities.profile.ProfileActivity"
             android:parentActivityName=".activities.home.HomeActivity" />

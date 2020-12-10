@@ -10,7 +10,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.activities.auth.RegisterActivity;
+import com.example.appchatapplication.activities.auth.register.RegisterActivity;
 import com.example.appchatapplication.activities.auth.login.LoginActivity;
 import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.modellayer.database.DatabasePresenter;

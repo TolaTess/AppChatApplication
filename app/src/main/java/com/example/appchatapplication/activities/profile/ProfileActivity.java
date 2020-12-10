@@ -239,5 +239,7 @@ public class ProfileActivity extends BaseActivity {
         mRequestButton.setText(R.string.send_friend_request);
     }
 
+
+
 }
 
