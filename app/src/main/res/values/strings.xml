@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppChatApplication</string>
+    <string name="app_name">AppChat</string>
     <string name="register">Register</string>
     <string name="log_out">Log out</string>
     <string name="login">Login</string>
@@ -33,6 +33,9 @@
     <string name="talk_to_friends">Go on, talk to your friends!</string>
     <string name="space">\" \"</string>
     <string name="home">Home</string>
+    <string name="to_do">To Do</string>
+    <string name="challenge">Challenge</string>
+    <string name="challenge_ys">Challenge Yourself</string>
     <string name="profile">Profile</string>
 
     <!-- TODO: Remove or change this placeholder text -->
