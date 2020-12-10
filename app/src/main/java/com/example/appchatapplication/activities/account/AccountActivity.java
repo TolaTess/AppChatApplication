@@ -7,12 +7,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.coordinator.IntentPresenter;
-import com.example.appchatapplication.helpers.BottomNavPresenter;
 import com.example.appchatapplication.modellayer.database.DatabasePresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.example.appchatapplication.modellayer.enums.ClassName;
@@ -20,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -28,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends BaseActivity {
 
     private static final int ACTIVITY_NUM = 3;
 
@@ -56,18 +54,12 @@ public class AccountActivity extends AppCompatActivity {
         presenter = new FirebaseDatabaseHelper();
         intentPresenter = new IntentPresenter(mContext);
 
-        setupToolbar();
-        setupBottomNav();
+        Toolbar toolbar = findViewById(R.id.setting_toolbar);
+        setUpToolbar(toolbar, "Account Settings");
+        setupBottomNav(this, ACTIVITY_NUM);
 
         fetch();
 
-    }
-
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.setting_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Account Settings");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void fetch() {
@@ -109,12 +101,6 @@ public class AccountActivity extends AppCompatActivity {
                 intentPresenter.presentIntent(ClassName.Account, statusValue, dNameValue);
             }
         });
-    }
-
-    private void setupBottomNav() {
-        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
-        BottomNavPresenter bottomNavPresenter = new BottomNavPresenter(mContext, ACTIVITY_NUM);
-        bottomNavPresenter.setupBottomNavigationView(bottomNavigationViewEx);
     }
 
     @Override

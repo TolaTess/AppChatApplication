@@ -1,26 +1,25 @@
 package com.example.appchatapplication.activities.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.activities.base.BaseActivity;
+import com.example.appchatapplication.activities.splash.SplashActivity;
 import com.example.appchatapplication.coordinator.IntentPresenter;
-import com.example.appchatapplication.helpers.BottomNavPresenter;
-import com.example.appchatapplication.helpers.CustomPagerAdapter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.example.appchatapplication.modellayer.enums.ClassName;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ServerValue;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
     private static final String TAG = "HomeActivity";
     private static final int ACTIVITY_NUM = 2;
 
@@ -28,6 +27,11 @@ public class HomeActivity extends AppCompatActivity {
     private IntentPresenter intentPresenter;
 
     private Context mContext = HomeActivity.this;
+
+    public static Intent getStartIntent(Context context){
+        Intent intent = new Intent(context, HomeActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,26 +41,14 @@ public class HomeActivity extends AppCompatActivity {
         databaseHelper = new FirebaseDatabaseHelper();
         intentPresenter = new IntentPresenter(mContext);
 
-        setupToolbar();
+        Toolbar toolbar = findViewById(R.id.main_page_toolbar);
+        setUpToolbar(toolbar, R.string.challenge);
         onlineCheck();
-        attachUI();
-       setupBottomNav();
-
-    }
-
-    private void attachUI() {
-        //Tabs
         ViewPager mViewPager = findViewById(R.id.main_view_pager);
-        CustomPagerAdapter customPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(customPagerAdapter);
         TabLayout tabLayout = findViewById(R.id.main_tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-    }
+        attachUI(mViewPager, tabLayout);
+        setupBottomNav(this, ACTIVITY_NUM);
 
-    private void setupBottomNav() {
-        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
-        BottomNavPresenter bottomNavPresenter = new BottomNavPresenter(mContext, ACTIVITY_NUM);
-        bottomNavPresenter.setupBottomNavigationView(bottomNavigationViewEx);
     }
 
     private void onlineCheck() {
@@ -64,12 +56,6 @@ public class HomeActivity extends AppCompatActivity {
             databaseHelper.getmUserDatabase().child(databaseHelper.getMcurrent_user_id())
             .child(getString(R.string.online_tag)).setValue("true");
         }
-    }
-
-    private void setupToolbar() {
-        Toolbar mToolbar = findViewById(R.id.main_page_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Challenge");
     }
 
     @Override
@@ -97,9 +83,16 @@ public class HomeActivity extends AppCompatActivity {
             databaseHelper.getHelper().getmAuth().signOut();
             databaseHelper.getmUserDatabase().child(databaseHelper.getMcurrent_user_id())
                     .child(getString(R.string.online_tag)).setValue(ServerValue.TIMESTAMP);
-            intentPresenter.presentIntent(ClassName.Start, null, null);
+            //intentPresenter.presentIntent(ClassName.Start, null, null);
+            openSplashActivity();
         }
         return true;
+    }
+
+    public void openSplashActivity() {
+        Intent intent = SplashActivity.getStartIntent(this);
+        startActivity(intent);
+        finish();
     }
 
 }

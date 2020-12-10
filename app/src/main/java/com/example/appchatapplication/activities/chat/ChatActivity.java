@@ -17,13 +17,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.helpers.GetTimeAgo;
 import com.example.appchatapplication.helpers.MessageAdapter;
 import com.example.appchatapplication.modellayer.model.ReceivedMessage;
@@ -56,14 +56,13 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import id.zelory.compressor.Compressor;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaseActivity {
 
     private String mChatReceiverUser;
     private DatabaseReference mRootRef;
     private FirebaseAuth mAuth;
     private StorageReference mImageStorage;
     private String mCurrentUserId;
-    private Toolbar mToolbar;
 
     private static final int GALLERY_PICK = 1;
 
@@ -101,10 +100,8 @@ public class ChatActivity extends AppCompatActivity {
         mImageStorage = FirebaseStorage.getInstance().getReference();
 
 
-        mToolbar = findViewById(R.id.chat_toolbar);
-        setSupportActionBar(mToolbar);
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        Toolbar mToolbar = findViewById(R.id.chat_toolbar);
+        setUpToolbar(mToolbar, "Chat");
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View action_bar_view = inflater.inflate(R.layout.chat_custom_bar, null);

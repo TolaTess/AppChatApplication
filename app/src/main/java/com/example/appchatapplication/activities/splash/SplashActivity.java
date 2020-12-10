@@ -1,6 +1,5 @@
 package com.example.appchatapplication.activities.splash;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +13,12 @@ import androidx.annotation.Nullable;
 
 import com.example.appchatapplication.R;
 import com.example.appchatapplication.activities.IdeaActivity;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.activities.start.StartActivity;
 import com.example.appchatapplication.modellayer.database.DatabasePresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 
-public class SplashActivity extends Activity implements SplashMvpView {
+public class SplashActivity extends BaseActivity implements SplashMvpView {
 
 
     TextView title;
@@ -70,4 +70,4 @@ public class SplashActivity extends Activity implements SplashMvpView {
     }
 
 
- }
+}

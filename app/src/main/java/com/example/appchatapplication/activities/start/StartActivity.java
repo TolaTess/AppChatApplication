@@ -1,6 +1,5 @@
 package com.example.appchatapplication.activities.start;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +10,13 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.activities.auth.login.LoginActivity;
 import com.example.appchatapplication.activities.auth.RegisterActivity;
+import com.example.appchatapplication.activities.auth.login.LoginActivity;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.modellayer.database.DatabasePresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 
-public class StartActivity extends Activity implements StartMvpView {
+public class StartActivity extends BaseActivity implements StartMvpView {
 
     Button registerBtn, loginBtn;
     StartPresenter mPresenter;
@@ -68,6 +68,5 @@ public class StartActivity extends Activity implements StartMvpView {
         startActivity(intent);
         finish();
     }
-
 
  }

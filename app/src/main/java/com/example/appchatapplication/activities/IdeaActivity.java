@@ -1,6 +1,7 @@
 package com.example.appchatapplication.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,16 +24,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.helpers.BottomNavPresenter;
-import com.example.appchatapplication.helpers.CustomPagerAdapterIdeas;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.modellayer.database.DatabasePresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.example.appchatapplication.modellayer.model.GenerateActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.json.JSONObject;
 
@@ -45,7 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class IdeaActivity extends AppCompatActivity {
+public class IdeaActivity extends BaseActivity {
     private static final String TAG = "IdeaActivity";
 
     private RequestQueue requestQueue;
@@ -68,6 +64,11 @@ public class IdeaActivity extends AppCompatActivity {
     private Context mContext = IdeaActivity.this;
     private DatabasePresenter databaseHelper;
 
+    public static Intent getStartIntent(Context context){
+        Intent intent = new Intent(context, IdeaActivity.class);
+        return intent;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +77,9 @@ public class IdeaActivity extends AppCompatActivity {
 
         databaseHelper = new FirebaseDatabaseHelper();
 
-        //attachUI();
-        setupToolbar();
-        setupBottomNav();
+        Toolbar mToolbar = findViewById(R.id.idea_main_toolbar);
+        setUpToolbar(mToolbar, R.string.challenge_ys);
+        setupBottomNav(this, ACTIVITY_NUM);
 
         wheel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,27 +193,5 @@ public class IdeaActivity extends AppCompatActivity {
         });
 
     }
-
-    private void setupBottomNav() {
-        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
-        BottomNavPresenter bottomNavPresenter = new BottomNavPresenter(mContext, ACTIVITY_NUM);
-        bottomNavPresenter.setupBottomNavigationView(bottomNavigationViewEx);
-    }
-
-    private void attachUI() {
-        //Tabs
-        ViewPager mViewPager = findViewById(R.id.idea_view_pager);
-        CustomPagerAdapterIdeas pagerAdapterIdeas = new CustomPagerAdapterIdeas(getSupportFragmentManager());
-        mViewPager.setAdapter(pagerAdapterIdeas);
-        TabLayout tabLayout = findViewById(R.id.idea_tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-    }
-
-    private void setupToolbar() {
-        Toolbar mToolbar = findViewById(R.id.idea_main_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Challenge Yourself");
-    }
-
 
 }

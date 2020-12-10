@@ -2,16 +2,17 @@ package com.example.appchatapplication.activities.profile;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.coordinator.IntentPresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.example.appchatapplication.modellayer.enums.ClassName;
@@ -23,7 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
     private static final String TAG = "ProfileActivity";
 
     private CircleImageView mProfileImage;
@@ -39,6 +40,11 @@ public class ProfileActivity extends AppCompatActivity {
     private State mCurrent_state;
     private String mName;
 
+    public static Intent getStartIntent(Context context){
+        Intent intent = new Intent(context, ProfileActivity.class);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +59,8 @@ public class ProfileActivity extends AppCompatActivity {
         String user_id_from_all_user = getIntent().getStringExtra("user_id");
         final String user_id = getUser_id(user_id_from_all_user);
 
-        setupToolbar();
+        Toolbar mToolbar = findViewById(R.id.profile_toolbar);
+        setUpToolbar(mToolbar, mName);
         attachUI();
 
         fetch(user_id);
@@ -230,13 +237,6 @@ public class ProfileActivity extends AppCompatActivity {
         btnSettings();
         mCurrent_state = State.not_friend;
         mRequestButton.setText(R.string.send_friend_request);
-    }
-
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.profile_toolbar);
-        setSupportActionBar(toolbar);
-        this.getSupportActionBar().setTitle(mName);
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }

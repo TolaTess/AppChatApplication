@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.appchatapplication.R;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import id.zelory.compressor.Compressor;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
     private static final String TAG = "StatusActivity";
     private static final int GALLERY_PICK = 1;
 
@@ -73,7 +73,8 @@ public class SettingActivity extends AppCompatActivity {
         mydataBaseRef = helper.getmUserDatabase().child(userId);
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        setupToolbar();
+        Toolbar toolbar = findViewById(R.id.status_toolbar);
+        setUpToolbar(toolbar, "Setting");
 
         //persist data
         String status_value = getIntent().getStringExtra("status_value");
@@ -121,12 +122,6 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.status_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Settings");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
