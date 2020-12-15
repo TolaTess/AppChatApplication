@@ -1,6 +1,7 @@
 package com.example.appchatapplication.activities.account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +45,11 @@ public class AccountActivity extends BaseActivity {
     private IntentPresenter intentPresenter;
     private DatabasePresenter presenter;
     private Context mContext = AccountActivity.this;
+
+    public static Intent getStartIntent(Context context){
+        Intent intent = new Intent(context, AccountActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

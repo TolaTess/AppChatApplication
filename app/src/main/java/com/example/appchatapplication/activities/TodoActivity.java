@@ -1,19 +1,20 @@
 package com.example.appchatapplication.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appchatapplication.R;
-import com.example.appchatapplication.helpers.BottomNavPresenter;
+import com.example.appchatapplication.activities.base.BaseActivity;
 import com.example.appchatapplication.helpers.TodoAdapter;
 import com.example.appchatapplication.modellayer.database.DatabasePresenter;
 import com.example.appchatapplication.modellayer.database.FirebaseDatabaseHelper;
@@ -22,7 +23,6 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class TodoActivity extends AppCompatActivity {
+public class TodoActivity extends BaseActivity {
     private static final int ACTIVITY_NUM = 1;
 
     @BindView(R.id.todo_view_pager)
@@ -47,14 +47,21 @@ public class TodoActivity extends AppCompatActivity {
     private TodoAdapter adapter;
     private DatabasePresenter databaseHelper;
 
+    public static Intent getStartIntent(Context context){
+        Intent intent = new Intent(context, TodoActivity.class);
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
         unbinder = ButterKnife.bind(this);
 
-        setupToolbar();
-        setupBottomNav();
+        Toolbar mToolbar = findViewById(R.id.todo_page_toolbar);
+        setUpToolbar(mToolbar, "To Do");
+        setupBottomNav(this, ACTIVITY_NUM);
+
         databaseHelper = new FirebaseDatabaseHelper();
 
         adapter = new TodoAdapter(this, type, activity, date, sortedType);
@@ -65,12 +72,6 @@ public class TodoActivity extends AppCompatActivity {
         mainRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         getData();
 
-    }
-
-    private void setupToolbar() {
-        Toolbar mToolbar = findViewById(R.id.todo_page_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("To Do");
     }
 
     private void getData(){
@@ -132,6 +133,7 @@ public class TodoActivity extends AppCompatActivity {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             activity.remove(viewHolder.getAdapterPosition());
             Toast.makeText(TodoActivity.this, "Removed", Toast.LENGTH_SHORT).show();
+            //remove from database
             //toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
             //toast.show();
             adapter.notifyDataSetChanged();
@@ -149,6 +151,7 @@ public class TodoActivity extends AppCompatActivity {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             activity.remove(viewHolder.getAdapterPosition());
             Toast.makeText(TodoActivity.this, "Well done! How about another?", Toast.LENGTH_SHORT).show();
+            //add done count to database
             //toast.setGravity(Gravity.CENTER_HORIZONTAL, 90, 0);
             //toast.show();
             adapter.notifyDataSetChanged();
@@ -156,11 +159,6 @@ public class TodoActivity extends AppCompatActivity {
         }
     };
 
-    private void setupBottomNav() {
-        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavViewBar);
-        BottomNavPresenter bottomNavPresenter = new BottomNavPresenter(this, ACTIVITY_NUM);
-        bottomNavPresenter.setupBottomNavigationView(bottomNavigationViewEx);
-    }
 
     @Override
     protected void onDestroy() {

@@ -7,8 +7,8 @@ import android.content.Intent;
 
 import com.example.appchatapplication.activities.IdeaActivity;
 import com.example.appchatapplication.activities.allusers.AllUserActivity;
-import com.example.appchatapplication.activities.auth.LoginActivity;
-import com.example.appchatapplication.activities.auth.RegisterActivity;
+import com.example.appchatapplication.activities.auth.login.LoginActivity;
+import com.example.appchatapplication.activities.auth.register.RegisterActivity;
 import com.example.appchatapplication.activities.chat.ChatActivity;
 import com.example.appchatapplication.activities.home.HomeActivity;
 import com.example.appchatapplication.activities.profile.ProfileActivity;
