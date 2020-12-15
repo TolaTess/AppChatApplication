@@ -3,6 +3,7 @@ package com.example.appchatapplication.modellayer.database;
 import android.content.Context;
 
 import com.example.appchatapplication.modellayer.enums.State;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.Map;
@@ -17,5 +18,6 @@ public interface DatabasePresenter {
     Map setupDatabaseMap(String muser_id, State mapType);
     void loadDatabase(final Context context, String muser_id, State mapType);
     Map writeTodo(String type, String activity);
+    FirebaseAuth getmAuth();
 
 }

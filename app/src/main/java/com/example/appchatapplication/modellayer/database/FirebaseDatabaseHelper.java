@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.appchatapplication.modellayer.enums.State;
 import com.example.appchatapplication.modellayer.model.GenerateActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,6 +26,7 @@ public class FirebaseDatabaseHelper implements DatabasePresenter {
     private DatabaseReference mUserDatabase;
 
     private FirebaseAuthHelper helper;
+    private FirebaseAuth mAuth;
 
     private String mcurrent_user_id;
 
@@ -32,10 +34,16 @@ public class FirebaseDatabaseHelper implements DatabasePresenter {
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        mAuth = FirebaseAuth.getInstance();
+
         helper = new FirebaseAuthHelper();
         if (helper.getmAuth().getCurrentUser() != null) {
             mcurrent_user_id = helper.getmAuth().getCurrentUser().getUid();
         }
+    }
+
+    public FirebaseAuth getmAuth() {
+        return mAuth;
     }
 
     public FirebaseAuthHelper getHelper() {

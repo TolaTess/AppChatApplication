@@ -22,14 +22,14 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                RequestFragment requestFragment = new RequestFragment();
-                return requestFragment;
+                FriendsFragment friendsFragment = new FriendsFragment();
+                return friendsFragment;
             case 1:
                 ChatFragment chatFragment = new ChatFragment();
                 return chatFragment;
             case 2:
-                FriendsFragment friendsFragment = new FriendsFragment();
-                return friendsFragment;
+                RequestFragment requestFragment = new RequestFragment();
+                return requestFragment;
             default:
                 return null;
         }
@@ -44,11 +44,11 @@ public class CustomPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position){
         switch (position){
             case 0:
-                return "REQUESTS";
+                return  "FRIENDS";
             case 1:
                 return "CHATS";
             case 2:
-                return  "FRIENDS";
+                return "REQUESTS";
             default:
                 return null;
         }
